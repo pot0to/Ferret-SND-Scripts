@@ -20,11 +20,7 @@ end
 
 function Pathfinding:count()
     self.ferret.logger:debug("Counting nodes")
-    local count = 0
-    for _ in pairs(self.nodes) do
-        count = count + 1
-    end
-
+    local count = self.ferret:getTableLength(self.nodes)
     self.ferret.logger:debug("   count: " .. count)
 
     return count
@@ -176,14 +172,13 @@ function Pathfinding:waitUntilClose(distance, max)
 end
 
 function Pathfinding:getLandableNodeNear(node)
-    self.ferret.logger:debug("Getting landable node near: " .. node)
     local fx = nil
     local fy = nil
     local fz = nil
     local i = 0
 
     self.ferret.logger:debug("Finding landable node near: " .. nodeToString(node))
-    while not x or not fy or not fz do
+    while not fx or not fy or not fz do
         fx = QueryMeshPointOnFloorX(node.x, node.y, node.z, false, i)
         fy = QueryMeshPointOnFloorY(node.x, node.y, node.z, false, i)
         fz = QueryMeshPointOnFloorZ(node.x, node.y, node.z, false, i)

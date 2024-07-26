@@ -32,13 +32,14 @@ function Retainers:reset()
 
     self.ferret.mount:mount()
 
+    self.ferret.pathfinding.index = 0
     local start = self.ferret.pathfinding.nodes[1]
     self.ferret.pathfinding:flyTo(start)
     self.ferret.pathfinding:waitUntilAtLocation(start)
 end
 
 function Ferret:setup()
-    self.logger:info("Spearfishing Template v1")
+    self.logger:info("Spearfishing Template v1.0.0")
     self.retainers:reset()
 end
 
@@ -83,7 +84,4 @@ function Ferret:loop()
     end
 
     self.retainers:check()
-
-    
-    self.ferret.logger:debug('Time elapsed: ' .. self.timer:elapsed() .. 's')
 end

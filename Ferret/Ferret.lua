@@ -8,6 +8,7 @@ require("Ferret/Mount")
 require("Ferret/Pathfinding")
 require("Ferret/Retainers")
 require("Ferret/Timer")
+require("Ferret/World")
 
 Ferret = {}
 function Ferret:new(name)
@@ -30,6 +31,7 @@ function Ferret:init()
     self.pathfinding = Pathfinding:new(self)
     self.retainers = Retainers:new(self)
     self.timer = Timer:new(self)
+    self.world = World:new(self)
 end
 
 function Ferret:wait(interval)
@@ -81,4 +83,15 @@ function Ferret:start()
         self:loop()
     end
     self.logger:debug("Done")
+end
+
+-- Helpers
+function Ferret:getTableLength(subject)
+    local count = 0
+
+    for _ in pairs(subject) do
+        count = count + 1
+    end
+
+    return count
 end

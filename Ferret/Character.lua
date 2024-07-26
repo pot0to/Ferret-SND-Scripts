@@ -11,12 +11,10 @@ function Character:new(ferret)
 end
 
 function Character:position()
-    self.ferret.logger:debug('Getting character position')
     return createNode(GetPlayerRawXPos(), GetPlayerRawYPos(), GetPlayerRawZPos())
 end
 
 function Character:hasCondition(condition)
-    self.ferret.logger:debug('Checking if character has condition: ' .. condition)
     return GetCharacterCondition(condition)
 end
 
@@ -33,6 +31,10 @@ function Character:action(action)
 end
 
 function Character:target(name)
+    if not name then
+        return
+    end
+
     yield('/target ' .. name)
 end
 

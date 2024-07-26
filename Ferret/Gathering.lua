@@ -4,7 +4,7 @@ require("Ferret/Data/Jobs")
 
 Gathering = {
     scanRange = 2048,
-    gatheringNodeNames = {}
+    nodeNames = {}
 }
 
 function Gathering:new(ferret)
@@ -37,6 +37,10 @@ function Gathering:integrity()
     end
 
     return 0
+end
+
+function Gathering:hasEureka()
+    return HasStatus("Eureka Moment")
 end
 
 function Gathering:waitToStart(max)
@@ -89,7 +93,7 @@ function Gathering:waitToStopColletable(max)
 end
 
 function Gathering:isValidNodeName(name)
-    for index, nodeName in pairs(self.gatheringNodeNames) do
+    for index, nodeName in pairs(self.nodeNames) do
         if nodeName == name then
             return true
         end
@@ -121,7 +125,7 @@ function Gathering:getNearestNode()
 end
 
 function Gathering:hasNearbyNodes()
-    return self:getNearbyNodes() ~= null
+    return self.ferret:getTableLength(self:getNearbyNodes()) > 0
 end
 
 function Gathering:waitForNearbyNode(max)
@@ -145,4 +149,12 @@ end
 
 function Gathering:isMiner()
     return GetClassJobId() == Jobs.Miner
+end
+
+function Gathering:getGp()
+    return GetGp()
+end
+
+function Gathering:getMaxGp()
+    return GetMaxGp()
 end
