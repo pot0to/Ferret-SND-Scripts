@@ -82,10 +82,6 @@ function Ferret:loop()
     self.gathering:wait_to_stop()
     self:wait(3) -- Allow time for pandora auto-cordial
 
-    self.character:extract_materia()
-    self.character:repair()
-    self.food:eat()
-
     if GetInventoryFreeSlotCount() <= self.spearfishing.reduceAt then
         self.character:aetherial_reduction()
         self:wait(1)

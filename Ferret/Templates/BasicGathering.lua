@@ -78,11 +78,6 @@ function Ferret:loop()
             self.logger:debug("Gathering")
             self.gathering:wait_to_stop()
             self:wait(1)
-
-            self.character:extract_materia()
-            self.character:repair()
-            self.food:eat()
-            self.retainers:check()
         end
     until not self.gathering:has_nearby_nodes()
 end

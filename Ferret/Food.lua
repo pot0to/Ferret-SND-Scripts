@@ -1,6 +1,6 @@
 require("Ferret/Data/Status")
 
-Food = {food = null, eat = false, eatAt = 5}
+Food = {food = null, should_eat = false, eat_at = 5}
 
 function Food:new(ferret)
     o = {}
@@ -28,14 +28,14 @@ function Food:wait_to_be_not_fed(max)
 end
 
 function Food:eat()
-    if not self.eat then return end
+    if not self.should_eat then return end
 
     if self.food == null then
         self.ferret.logger:debug('Not eating, food not set')
         return
     end
 
-    if self:get_minutes_left() > self.eatAt then
+    if self:get_minutes_left() > self.eat_at then
         self.ferret.logger:debug('Not eating, time not exceeded')
         return
     end

@@ -68,7 +68,9 @@ function Ferret:wait_until(condition, delay, max)
 end
 
 function Ferret:wait_for_addon(addon)
+    self.logger:debug('Waiting for addon: ' .. addon)
     self:wait_until(function() return IsAddonVisible(addon) end)
+    self.logger:debug('Addon ' .. addon .. ' is now visible')
 end
 
 function Ferret:stop() self.run = false end
@@ -80,6 +82,13 @@ function Ferret:loop()
     self:stop()
 end
 
+function Ferret:pre_loop()
+    self.character:extract_materia()
+    self.character:repair()
+    self.food:eat()
+    self.retainers:check()
+end
+
 function Ferret:start()
     self.timer:start()
     self.logger:debug("Running Setup")
@@ -89,7 +98,10 @@ function Ferret:start()
     end
 
     self.logger:debug("Starting loop...")
-    while (self.run) do self:loop() end
+    while (self.run) do
+        -- self:pre_loop()
+        self:loop()
+    end
     self.logger:debug("Done")
 end
 

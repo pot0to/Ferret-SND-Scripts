@@ -190,10 +190,6 @@ function Ferret:loop()
     self.gathering:wait_to_stop_collectable()
     self:wait(1)
 
-    self.character:extract_materia()
-    self.character:repair()
-    self.food:eat()
-
     if not self.ferret.world:isTimeBetween(
         self.ferret.ephemeralGathering.startTime,
         self.ferret.ephemeralGathering.endTime) then
