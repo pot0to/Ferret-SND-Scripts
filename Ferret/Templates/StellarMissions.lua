@@ -1,7 +1,13 @@
 require("Ferret/Ferret")
 
+MissionOrder = {
+    TopPriority = 1, -- Execute missions in the order they are listed
+    Random = 2 -- Execute missions in random order
+}
+
 StellarMissions = {
-    missions = {} -- Missions to automatically start
+    missions = {}, -- Missions to automatically start
+    mission_order = MissionOrder.TopPriority
 }
 
 function StellarMissions:new(ferret)
@@ -13,7 +19,20 @@ function StellarMissions:new(ferret)
 end
 
 function StellarMissions:get_first_desired_mission()
-    for _, mission in ipairs(self.missions) do
+    local missions = self.missions
+    if self.mission_order == MissionOrder.Random then
+        function shuffle(tbl)
+            for i = #tbl, 2, -1 do
+                local j = math.random(i)
+                tbl[i], tbl[j] = tbl[j], tbl[i]
+            end
+            return tbl
+        end
+
+        missions = shuffle(missions)
+    end
+
+    for _, mission in ipairs(missions) do
         if self.ferret.cosmic_exploration:is_mission_available(mission) then
             return mission
         end
