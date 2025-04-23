@@ -13,14 +13,14 @@ end
 
 function GatherBuddy:gather(name)
     yield('/gather ' .. name)
-    self.ferret.character:waitUntilNotAvailable(10)
-    self.ferret.character:waitUntilAvailable()
+    self.ferret.character:wait_untilNotAvailable(10)
+    self.ferret.character:wait_until_available()
     self.ferret:wait(2)
 end
 
-function GatherBuddy:gatherFish(name)
-    yield('/gatherfish ' .. name)
-    self.ferret.character:waitUntilNotAvailable(10)
-    self.ferret.character:waitUntilAvailable()
+function GatherBuddy:gather_fish(name)
+    yield('/gather_fish ' .. name)
+    self.ferret.character:wait_untilNotAvailable(10)
+    self.ferret.character:wait_until_available()
     self.ferret:wait(2)
 end

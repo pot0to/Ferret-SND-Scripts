@@ -7,8 +7,11 @@ require("Ferret/Logger")
 require("Ferret/Mount")
 require("Ferret/Pathfinding")
 require("Ferret/Retainers")
+require("Ferret/Spearfishing")
 require("Ferret/Timer")
 require("Ferret/World")
+require("Ferret/CosmicExploration")
+require("Ferret/Chat")
 
 Ferret = {}
 function Ferret:new(name)
@@ -30,15 +33,18 @@ function Ferret:init()
     self.mount = Mount:new(self)
     self.pathfinding = Pathfinding:new(self)
     self.retainers = Retainers:new(self)
+    self.spearfishing = Spearfishing:new(self)
     self.timer = Timer:new(self)
     self.world = World:new(self)
+    self.cosmic_exploration = CosmicExploration:new(self)
+    self.chat = Chat:new(self)
+
+    self.character_name = nil;
 end
 
-function Ferret:wait(interval)
-    yield('/wait ' .. interval)
-end
+function Ferret:wait(interval) yield('/wait ' .. interval) end
 
-function Ferret:repeatUntil(action, condition, delay, max)
+function Ferret:repeat_until(action, condition, delay, max)
     local delay = delay or 0.5
     local elapsed = 0
 
@@ -49,10 +55,11 @@ function Ferret:repeatUntil(action, condition, delay, max)
     until condition() or (max ~= nil and max > 0 and elapsed >= max)
 end
 
-
-function Ferret:waitUntil(condition, delay, max)
+function Ferret:wait_until(condition, delay, max)
     local delay = delay or 0.5
     local elapsed = 0
+
+    if condition() then return end
 
     repeat
         self:wait(delay)
@@ -60,13 +67,13 @@ function Ferret:waitUntil(condition, delay, max)
     until condition() or (max ~= nil and max > 0 and elapsed >= max)
 end
 
-function Ferret:stop()
-    self.run = false
+function Ferret:wait_for_addon(addon)
+    self:wait_until(function() return IsAddonVisible(addon) end)
 end
 
-function Ferret:setup()
-    self.logger:debug("No setup implemented")
-end
+function Ferret:stop() self.run = false end
+
+function Ferret:setup() self.logger:debug("No setup implemented") end
 
 function Ferret:loop()
     self.logger:warn("No loop implemented")
@@ -76,22 +83,21 @@ end
 function Ferret:start()
     self.timer:start()
     self.logger:debug("Running Setup")
-    self:setup()
+    if not self:setup() then
+        self.logger:error("An error occured during setup")
+        return
+    end
 
     self.logger:debug("Starting loop...")
-    while(self.run) do
-        self:loop()
-    end
+    while (self.run) do self:loop() end
     self.logger:debug("Done")
 end
 
 -- Helpers
-function Ferret:getTableLength(subject)
+function Ferret:get_table_length(subject)
     local count = 0
 
-    for _ in pairs(subject) do
-        count = count + 1
-    end
+    for _ in pairs(subject) do count = count + 1 end
 
     return count
 end

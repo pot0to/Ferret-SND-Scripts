@@ -1,8 +1,4 @@
-Logger = {
-    ferret = nil,
-    logToFile = false,
-    showDebug = false
-}
+Logger = {ferret = nil, log_to_file = false, show_debug = false}
 
 function Logger:new(ferret)
     o = {}
@@ -18,9 +14,7 @@ function Logger:info(contents)
 end
 
 function Logger:debug(contents)
-    if not self.showDebug then
-        return
-    end
+    if not self.show_debug then return end
 
     yield('/e [' .. self.ferret.name .. '][Debug]: ' .. contents)
 end
@@ -33,6 +27,4 @@ function Logger:error(contents)
     yield('/e [' .. self.ferret.name .. '][Error]: ' .. contents)
 end
 
-function Logger:setDebug(value)
-    self.showDebug = value
-end
+function Logger:set_debug(value) self.show_debug = value end

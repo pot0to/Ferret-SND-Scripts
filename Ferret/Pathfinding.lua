@@ -1,9 +1,6 @@
 require("Ferret/Node")
 
-Pathfinding = {
-    nodes = {},
-    index = 0
-}
+Pathfinding = {nodes = {}, index = 0}
 
 function Pathfinding:new(ferret)
     o = {}
@@ -14,13 +11,14 @@ function Pathfinding:new(ferret)
 end
 
 function Pathfinding:add(node)
-    self.ferret.logger:debug("Adding node to pathfinshing: " .. nodeToString(node))
+    self.ferret.logger:debug("Adding node to pathfinshing: " ..
+                                 node_to_string(node))
     table.insert(self.nodes, node)
 end
 
 function Pathfinding:count()
     self.ferret.logger:debug("Counting nodes")
-    local count = self.ferret:getTableLength(self.nodes)
+    local count = self.ferret:get_table_length(self.nodes)
     self.ferret.logger:debug("   count: " .. count)
 
     return count
@@ -41,7 +39,7 @@ function Pathfinding:next()
     local count = self:count()
     if count <= 0 then
         self.ferret.logger:debug("No nodes found, adding zeroed node")
-        self:add(createNode(0, 0, 0))
+        self:add(create_node(0, 0, 0))
     end
 
     self.index = self.index + 1
@@ -52,7 +50,7 @@ function Pathfinding:next()
 
     local node = self.nodes[self.index]
     self.ferret.logger:debug('Node: (' .. self.index .. '/' .. count .. ')')
-    self.ferret.logger:debug(' > ' .. nodeToString(node))
+    self.ferret.logger:debug(' > ' .. node_to_string(node))
 
     return node
 end
@@ -64,48 +62,40 @@ function Pathfinding:distance()
     return GetDistanceToPoint(node.x, node.y, node.z)
 end
 
-function Pathfinding:flyTo(node)
-    self.ferret.logger:debug("Flying to node: " .. nodeToString(node))
+function Pathfinding:fly_to(node)
+    self.ferret.logger:debug("Flying to node: " .. node_to_string(node))
     yield('/vnavmesh flyto ' .. node.x .. ' ' .. node.y .. ' ' .. node.z)
 end
 
 function Pathfinding:walkTo(node)
-    self.ferret.logger:debug("Walking to node: " .. nodeToString(node))
-    if self:distance() >= 500 then
-        self.ferret.character:action('sprint')
-    end
+    self.ferret.logger:debug("Walking to node: " .. node_to_string(node))
+    if self:distance() >= 500 then self.ferret.character:action('sprint') end
 
     yield('/vnavmesh moveto ' .. node.x .. ' ' .. node.y .. ' ' .. node.z)
 end
 
-function Pathfinding:moveTo(node)
-    if self.ferret.mount:isFlying() then
-        return self:flyTo(node)
-    end
+function Pathfinding:move_to(node)
+    if self.ferret.mount:isFlying() then return self:fly_to(node) end
 
     self:walkTo(node)
 end
 
-function Pathfinding:flyToFlag()
+function Pathfinding:fly_to_flag()
     self.ferret.logger:debug("Flying to flag")
     yield('/vnavmesh flyflag')
 end
 
-function Pathfinding:walkToFlag()
+function Pathfinding:walk_to_flag()
     self.ferret.logger:debug("Walking to flag")
-    if self:distance() >= 500 then
-        self.ferret.character:action('sprint')
-    end
+    if self:distance() >= 500 then self.ferret.character:action('sprint') end
 
     yield('/vnavmesh moveflag')
 end
 
-function Pathfinding:moveToFlag()
-    if self.ferret.mount:isFlying() then
-        return self:flyToFlag(node)
-    end
+function Pathfinding:move_to_flag()
+    if self.ferret.mount:isFlying() then return self:fly_to_flag(node) end
 
-    self:walkToFlag(node)
+    self:walk_to_flag(node)
 end
 
 function Pathfinding:stop()
@@ -113,71 +103,67 @@ function Pathfinding:stop()
     yield('/vnavmesh stop')
 end
 
-function Pathfinding:waitToStart(max)
+function Pathfinding:wait_to_start(max)
     self.ferret.logger:debug("Waiting to start moving")
     local max = max or 10
 
-    self.ferret:waitUntil(
-        function() return self.ferret.character:isMoving() end,
-        0.5,
-        max
-    )
+    self.ferret:wait_until(function()
+        return self.ferret.character:is_moving()
+    end, 0.5, max)
 
     self.ferret.logger:debug("   > Done")
 end
 
-function Pathfinding:waitToStop(max)
+function Pathfinding:wait_to_stop(max)
     self.ferret.logger:debug("Waiting to stop moving")
     local max = max or 60
 
-    self.ferret:waitUntil(
-        function() return not self.ferret.character:isMoving() end,
-        0.5,
-        max
-    )
+    self.ferret:wait_until(function()
+        return not self.ferret.character:is_moving()
+    end, 0.5, max)
 
     self.ferret.logger:debug("   > Done")
 end
 
-function Pathfinding:isNodeSimilar(a, b, threshold)
+function Pathfinding:is_node_similar(a, b, threshold)
     local threshold = threshold or 1
 
-    return (math.abs(a.x - b.x) <= threshold) and (math.abs(a.y - b.y) <= threshold) and (math.abs(a.z - b.z) <= threshold)
+    return (math.abs(a.x - b.x) <= threshold) and
+               (math.abs(a.y - b.y) <= threshold) and
+               (math.abs(a.z - b.z) <= threshold)
 end
 
-function Pathfinding:waitUntilAtLocation(location, max)
-    self.ferret.logger:debug("Waiting to be at location: " .. nodeToString(location))
+function Pathfinding:wait_until_at_location(location, max)
+    self.ferret.logger:debug("Waiting to be at location: " ..
+                                 node_to_string(location))
     local max = max or 60
 
-    self.ferret:waitUntil(
-        function() return self:isNodeSimilar(self.ferret.character:position(), location) end,
-        0.5,
-        max
-    )
+    self.ferret:wait_until(function()
+        return self:is_node_similar(self.ferret.character:position(), location)
+    end, 0.5, max)
 
     self.ferret.logger:debug("   > Done")
 end
 
-function Pathfinding:waitUntilClose(distance, max)
+function Pathfinding:wait_until_close(distance, max)
     self.ferret.logger:debug("Waiting to be at close to target")
     local max = max or 60
 
-    self.ferret:waitUntil(
-        function() return self.ferret.character:getDistanceToTarget() <= distance end,
-        0.1,
-        max
-    )
+    self.ferret:wait_until(function()
+        return self.ferret.character:get_distance_to_target() <= distance
+    end, 0.1, max)
 
     self.ferret.logger:debug("   > Done")
 end
 
-function Pathfinding:getLandableNodeNear(node)
+function Pathfinding:get_landable_node_near(node)
     local fx = nil
     local fy = nil
     local fz = nil
     local i = 0
 
-    self.ferret.logger:debug("Finding landable node near: " .. nodeToString(node))
+    self.ferret.logger:debug("Finding landable node near: " ..
+                                 node_to_string(node))
     while not fx or not fy or not fz do
         fx = QueryMeshPointOnFloorX(node.x, node.y, node.z, false, i)
         fy = QueryMeshPointOnFloorY(node.x, node.y, node.z, false, i)
@@ -185,9 +171,9 @@ function Pathfinding:getLandableNodeNear(node)
         i = i + 1
     end
 
-    local floor = createNode(fx, fy, fz)
+    local floor = create_node(fx, fy, fz)
     self.ferret.logger:debug("   > Iterations: " .. i)
-    self.ferret.logger:debug("   > Node: " .. nodeToString(floor))
+    self.ferret.logger:debug("   > Node: " .. node_to_string(floor))
 
     return floor
 end
