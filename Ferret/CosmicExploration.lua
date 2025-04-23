@@ -2213,7 +2213,8 @@ CosmicExploration = {
     custom_solutions = {
         -- CRP
         ["Cosmoliner Supplies"] = (function() end)
-    }
+    },
+    filtered_missions = {}
 }
 
 function CosmicExploration:new(ferret)
@@ -2228,6 +2229,12 @@ function CosmicExploration:is_main_ui_visible() return IsAddonVisible("WKSHud") 
 
 function CosmicExploration:wait_for_main_ui_to_be_visible()
     self.ferret:wait_until(function() return self:is_main_ui_visible() end);
+end
+
+function CosmicExploration:generate_filtered_missions(job)
+    for id, datum in pairs(self.mission_data) do
+        if datum.job == job then self.filtered_missions[id] = datum end
+    end
 end
 
 function CosmicExploration:start_craft()
@@ -2270,14 +2277,14 @@ function CosmicExploration:open_provisional_mission_ui()
     end
 end
 
-function CosmicExploration:get_available_missions(job)
+function CosmicExploration:get_available_missions()
     local missions = {}
     local index = 2 -- Start at 2 because that's the first mission node
     repeat
         local mission = GetNodeText("WKSMission", 89, index, 8)
         if mission ~= "" then
-            local id = self:get_mission_id_from_name_and_job(mission, job)
-            local data = self.mission_data[id]
+            local id = self:get_mission_id_from_name(mission)
+            local data = self.filtered_missions[id]
             table.insert(missions, data)
             index = index + 1
         end
@@ -2286,8 +2293,8 @@ function CosmicExploration:get_available_missions(job)
     return missions;
 end
 
-function CosmicExploration:is_mission_available(mission, job)
-    local available_missions = self:get_available_missions(job)
+function CosmicExploration:is_mission_available(mission)
+    local available_missions = self:get_available_missions()
     for _, data in ipairs(available_missions) do
         if string.find(data.name, mission, 1, true) then return true end
     end
@@ -2295,11 +2302,9 @@ function CosmicExploration:is_mission_available(mission, job)
     return false
 end
 
-function CosmicExploration:get_mission_id_from_name_and_job(name, job)
-    for id, datum in pairs(self.mission_data) do
-        if datum.job == job and string.find(name, datum.name, 0, true) then
-            return id
-        end
+function CosmicExploration:get_mission_id_from_name(name)
+    for id, datum in pairs(self.filtered_missions) do
+        if string.find(name, datum.name, 0, true) then return id end
     end
 
     return 0
@@ -2318,6 +2323,7 @@ function CosmicExploration:report_mission()
         self.ferret:wait_for_addon("WKSMissionInfomation")
     end
 
+    self.ferret:wait(2)
     yield("/callback WKSMissionInfomation true 11")
 end
 
@@ -2331,10 +2337,9 @@ function CosmicExploration:abandon_mission()
 end
 
 -- Get's the first mission available
-function CosmicExploration:get_first_available_mission_of_class_and_job(class,
-                                                                        job)
-    for id, datum in pairs(self.mission_data) do
-        if datum.class == class and self:is_mission_available(datum.name, job) then
+function CosmicExploration:get_first_available_mission_of_class(class)
+    for id, datum in pairs(self.filtered_missions) do
+        if datum.class == class and self:is_mission_available(datum.name) then
             return id
         end
     end
@@ -2350,15 +2355,25 @@ function CosmicExploration:has_finished_mission()
     return self.ferret.character:has_condition(Conditions.Normal)
 end
 
-function CosmicExploration:refresh_missions(class, job)
-    local id = self:get_first_available_mission_of_class_and_job(class, job)
-    if id == nil then return false end
+function CosmicExploration:refresh_missions(class)
+    local id = self:get_first_available_mission_of_class(class)
+    if id == nil then
+        self.ferret.logger:error('No available missions of class ' .. class)
+        return false
+    end
+
+    local mission_data = self.filtered_missions[id]
+    self.ferret.logger:debug('Starting mission: ' .. mission_data.name)
+    self.ferret.logger:debug('    mission id:' .. id)
+    self.ferret.logger:debug('    mission class:' .. mission_data.class)
+    self.ferret.logger:debug('    mission job:' .. mission_data.job)
 
     self:start_mission(id)
     self.ferret:wait(1)
     self.ferret.logger:debug('Waiting for mission to start')
     self:wait_to_start_mission()
 
+    self.ferret.logger:debug('Abandoning mission')
     self:abandon_mission()
     self.ferret:wait(4)
     return true

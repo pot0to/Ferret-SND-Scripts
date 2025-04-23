@@ -1,3 +1,4 @@
+require("Ferret/Version")
 require("Ferret/Character")
 require("Ferret/Food")
 require("Ferret/GatherBuddy")
@@ -11,7 +12,6 @@ require("Ferret/Spearfishing")
 require("Ferret/Timer")
 require("Ferret/World")
 require("Ferret/CosmicExploration")
-require("Ferret/Chat")
 
 Ferret = {}
 function Ferret:new(name)
@@ -24,6 +24,7 @@ function Ferret:new(name)
 end
 
 function Ferret:init()
+    self.version = Version:new(0, 1, 0)
     self.character = Character:new(self)
     self.food = Food:new(self)
     self.gatherBuddy = GatherBuddy:new(self)
@@ -37,7 +38,6 @@ function Ferret:init()
     self.timer = Timer:new(self)
     self.world = World:new(self)
     self.cosmic_exploration = CosmicExploration:new(self)
-    self.chat = Chat:new(self)
 
     self.character_name = nil;
 end
@@ -91,6 +91,7 @@ end
 
 function Ferret:start()
     self.timer:start()
+    self.logger:info("Ferret version: " .. self.version:to_string())
     self.logger:debug("Running Setup")
     if not self:setup() then
         self.logger:error("An error occured during setup")
