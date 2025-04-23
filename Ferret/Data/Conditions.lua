@@ -1,4 +1,5 @@
 Conditions = {
+    Normal = 1,
     Mounted = 4,
     Gathering = 6,
     Gathering42 = 42,

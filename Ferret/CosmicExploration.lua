@@ -602,7 +602,6 @@ end
 function CosmicExploration:start_mission_by_id(id)
     self:open_basic_mission_ui()
     self.ferret:wait_for_addon("WKSMission")
-    self.ferret.logger:debug("/callback WKSMission true 13 " .. id)
     yield("/callback WKSMission true 13 " .. id)
 end
 
@@ -633,6 +632,14 @@ function CosmicExploration:get_first_available_mission()
     return nil
 end
 
+function CosmicExploration:wait_to_start_mission()
+    self.ferret:wait_for_addon("WKSRecipeNotebook")
+end
+
+function CosmicExploration:has_finished_mission()
+    return self.ferret.character:has_condition(Conditions.Normal)
+end
+
 function CosmicExploration:refresh_missions()
     local id = self:get_first_available_mission()
     if id == nil then return false end
@@ -640,8 +647,7 @@ function CosmicExploration:refresh_missions()
     self:start_mission_by_id(id)
     self.ferret:wait(1)
     self.ferret.logger:debug('Waiting for mission to start')
-    self.ferret.chat:wait_for_message('The stellar mission “')
-    self.ferret.chat:send_marker()
+    self:wait_to_start_mission()
 
     self:abandon_mission()
     self.ferret:wait(4)
