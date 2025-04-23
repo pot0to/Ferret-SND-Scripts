@@ -1117,7 +1117,9 @@ end
 function CosmicExploration:is_mission_available(mission)
     local available_missions = self:get_available_missions()
     for _, available_mission in ipairs(available_missions) do
-        if string.find(available_mission, mission) then return true end
+        if string.find(available_mission, mission, 1, true) then
+            return true
+        end
     end
 
     return false
