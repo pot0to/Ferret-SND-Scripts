@@ -2270,24 +2270,26 @@ function CosmicExploration:open_provisional_mission_ui()
     end
 end
 
-function CosmicExploration:get_available_missions()
+function CosmicExploration:get_available_missions(job)
     local missions = {}
     local index = 2 -- Start at 2 because that's the first mission node
     repeat
         local mission = GetNodeText("WKSMission", 89, index, 8)
-        if mission ~= "" then table.insert(missions, mission) end
-        index = index + 1
+        if mission ~= "" then
+            local id = self:get_mission_id_from_name_and_job(mission, job)
+            local data = self.mission_data[id]
+            table.insert(missions, data)
+            index = index + 1
+        end
     until (mission == "")
 
     return missions;
 end
 
-function CosmicExploration:is_mission_available(mission)
-    local available_missions = self:get_available_missions()
-    for _, available_mission in ipairs(available_missions) do
-        if string.find(available_mission, mission, 1, true) then
-            return true
-        end
+function CosmicExploration:is_mission_available(mission, job)
+    local available_missions = self:get_available_missions(job)
+    for _, data in ipairs(available_missions) do
+        if string.find(data.name, mission, 1, true) then return true end
     end
 
     return false
@@ -2295,10 +2297,12 @@ end
 
 function CosmicExploration:get_mission_id_from_name_and_job(name, job)
     for id, datum in pairs(self.mission_data) do
-        if datum.name == name and datum.job == job then return id end
+        if datum.job == job and string.find(name, datum.name, 0, true) then
+            return id
+        end
     end
 
-    return 1
+    return 0
 end
 
 function CosmicExploration:start_mission(id)
@@ -2330,8 +2334,9 @@ end
 function CosmicExploration:get_first_available_mission_of_class_and_job(class,
                                                                         job)
     for id, datum in pairs(self.mission_data) do
-        if datum.class == class and datum.job == job and
-            self:is_mission_available(datum.name) then return id end
+        if datum.class == class and self:is_mission_available(datum.name, job) then
+            return id
+        end
     end
 
     return nil

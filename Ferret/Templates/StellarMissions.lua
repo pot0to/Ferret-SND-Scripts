@@ -35,8 +35,8 @@ function StellarMissions:get_first_desired_mission()
 
     for _, mission in ipairs(missions) do
 
-        if mission.job == self.job and
-            self.ferret.cosmic_exploration:is_mission_available(mission) then
+        self.ferret.logger:debug('Checking mission: ' .. mission)
+        if self.ferret.cosmic_exploration:is_mission_available(mission, self.job) then
             return mission
         end
     end
