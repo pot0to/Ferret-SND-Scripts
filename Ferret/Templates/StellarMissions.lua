@@ -7,7 +7,8 @@ MissionOrder = {
 
 StellarMissions = {
     missions = {}, -- Missions to automatically start
-    mission_order = MissionOrder.TopPriority
+    mission_order = MissionOrder.TopPriority,
+    job = nil
 }
 
 function StellarMissions:new(ferret)
@@ -33,7 +34,9 @@ function StellarMissions:get_first_desired_mission()
     end
 
     for _, mission in ipairs(missions) do
-        if self.ferret.cosmic_exploration:is_mission_available(mission) then
+
+        if mission.job == self.job and
+            self.ferret.cosmic_exploration:is_mission_available(mission) then
             return mission
         end
     end
@@ -56,8 +59,9 @@ function StellarMissions:get_mission_class()
     end
 
     for _, mission in ipairs(missions) do
-        local id = self.ferret.cosmic_exploration:get_mission_id_from_name(
-                       mission)
+        local id =
+            self.ferret.cosmic_exploration:get_mission_id_from_name_and_job(
+                mission, self.job)
 
         return self.ferret.cosmic_exploration.mission_data[id].class
     end
@@ -70,6 +74,13 @@ ferret.stellar_missions = StellarMissions:new(ferret)
 
 function Ferret:setup()
     self.logger:info("Steller Missoins V1.0.0")
+
+    if self.stellar_missions.job == nil then
+        self.logger:error('Job not set')
+        self.logger:info(
+            "Please set `ferret.stellar_missions.job = Jobs.Carpenter` etc.")
+        return false
+    end
 
     return true
 end
@@ -88,7 +99,9 @@ function Ferret:loop()
         self.logger:debug('No desired mission found')
         local class = self.stellar_missions:get_mission_class()
         self.logger:debug('Abandoning mission with class: ' .. class)
-        if not self.cosmic_exploration:refresh_missions(class) then
+        if not self.cosmic_exploration:refresh_missions(class,
+                                                        self.stellar_missions
+                                                            .job) then
             self.logger:error('Could not find mission to abandon')
             self.run = false
         end
@@ -96,14 +109,15 @@ function Ferret:loop()
         return
     end
 
-    local mission_id = self.cosmic_exploration:get_mission_id_from_name(mission)
+    local mission_id = self.cosmic_exploration:get_mission_id_from_name_and_job(
+                           mission, self.stellar_missions.job)
     local mission_data = self.cosmic_exploration.mission_data[mission_id]
     self.logger:debug('Starting mission: ' .. mission)
     self.logger:debug('    mission id:' .. mission_id)
     self.logger:debug('    mission class:' .. mission_data.class)
     self.logger:debug('    mission job:' .. mission_data.job)
 
-    self.cosmic_exploration:start_mission(mission)
+    self.cosmic_exploration:start_mission(mission_id)
 
     self:wait(1)
     self.cosmic_exploration:wait_to_start_mission()
