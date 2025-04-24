@@ -29,7 +29,7 @@ function Ferret:new(name)
 end
 
 function Ferret:init()
-    self.version = Version:new(0, 1, 0)
+    self.version = Version:new(0, 2, 0)
     self.character = Character:new(self)
     self.food = Food:new(self)
     self.gatherBuddy = GatherBuddy:new(self)
@@ -110,15 +110,11 @@ function Ferret:start()
 
     self.logger:debug("Starting loop...")
     while (self.run) do
-        for _, plugin in pairs(self.plugins) do
-            plugin:pre_loop(self)
-        end
+        for _, plugin in pairs(self.plugins) do plugin:pre_loop(self) end
 
         self:loop()
 
-        for _, plugin in pairs(self.plugins) do
-            plugin:post_loop(self)
-        end
+        for _, plugin in pairs(self.plugins) do plugin:post_loop(self) end
     end
     self.logger:debug("Done")
 end
@@ -133,20 +129,13 @@ function Ferret:get_table_length(subject)
 end
 
 function Ferret:table_contains(table, value)
-    for _, v in pairs(table) do
-        if v == value then
-            return true
-        end
-    end
+    for _, v in pairs(table) do if v == value then return true end end
     return false
 end
 
-
 function Ferret:table_random(subject)
     local keys = {}
-    for key, _ in pairs(subject) do
-        table.insert(keys, key)
-    end
+    for key, _ in pairs(subject) do table.insert(keys, key) end
 
     local key = keys[math.random(1, #keys)]
     return subject[key]

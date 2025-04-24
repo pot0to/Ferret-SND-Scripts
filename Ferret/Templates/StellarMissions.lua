@@ -12,7 +12,7 @@ function StellarMissions:new()
     self.mission_list = {};
     self.mission_order = MissionOrder.TopPriority;
     self.job = nil;
-    self.template_version = Version:new(2, 0, 0);
+    self.template_version = Version:new(2, 0, 1);
 end
 
 function StellarMissions:setup()
