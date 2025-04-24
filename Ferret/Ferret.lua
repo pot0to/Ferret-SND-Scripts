@@ -1,6 +1,7 @@
 Object = require("external/classic")
 
 require("Ferret/Version")
+require("Ferret/Plugins/Plugin")
 require("Ferret/Character")
 require("Ferret/Food")
 require("Ferret/GatherBuddy")
@@ -23,6 +24,7 @@ function Ferret:new(name)
     self.name = name
     self.run = true
     self.language = 'en'
+    self.plugins = {}
     return o
 end
 
@@ -43,6 +45,11 @@ function Ferret:init()
     self.cosmic_exploration = CosmicExploration:new(self)
 
     self.character_name = nil;
+end
+
+function Ferret:add_plugin(plugin)
+    self.logger:debug("Adding plugin: " .. plugin.name)
+    table.insert(self.plugins, plugin)
 end
 
 function Ferret:wait(interval) yield('/wait ' .. interval) end
@@ -103,8 +110,15 @@ function Ferret:start()
 
     self.logger:debug("Starting loop...")
     while (self.run) do
-        -- self:pre_loop()
+        for _, plugin in pairs(self.plugins) do
+            plugin:pre_loop(self)
+        end
+
         self:loop()
+
+        for _, plugin in pairs(self.plugins) do
+            plugin:post_loop(self)
+        end
     end
     self.logger:debug("Done")
 end
