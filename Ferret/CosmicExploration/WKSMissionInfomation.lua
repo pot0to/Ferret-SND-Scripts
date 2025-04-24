@@ -8,7 +8,9 @@ function WKSMissionInfomation:new(ferret)
     return o
 end
 
-function WKSMissionInfomation:is_visible() return IsAddonVisible("WKSMissionInfomation") end
+function WKSMissionInfomation:is_visible()
+    return IsAddonVisible("WKSMissionInfomation")
+end
 
 function WKSMissionInfomation:wait_until_visible()
     self.ferret:wait_for_addon("WKSMissionInfomation")

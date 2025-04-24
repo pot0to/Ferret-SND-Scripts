@@ -10,9 +10,7 @@ end
 
 function WKSMission:is_visible() return IsAddonVisible("WKSMission") end
 
-function WKSMission:wait_until_visible()
-    self.ferret:wait_for_addon("WKSMission")
-end
+function WKSMission:wait_until_visible() self.ferret:wait_for_addon("WKSMission") end
 
 function WKSMission:start_mission(id)
     self:wait_until_visible()
@@ -57,7 +55,8 @@ function WKSMission:get_available_missions()
     repeat
         local mission = self:get_mission_name_by_index(index):gsub(" ", "")
         if mission ~= "" then
-            local found_mission = self.ferret.cosmic_exploration.mission_list:find_by_name(mission)
+            local found_mission =
+                self.ferret.cosmic_exploration.mission_list:find_by_name(mission)
             if found_mission ~= nil then
                 -- self.ferret.logger:debug(mission .. ": " .. found_mission:to_string())
                 missions.missions[found_mission.id] = found_mission

@@ -8,7 +8,9 @@ function WKSRecipeNotebook:new(ferret)
     return o
 end
 
-function WKSRecipeNotebook:is_visible() return IsAddonVisible("WKSRecipeNotebook") end
+function WKSRecipeNotebook:is_visible()
+    return IsAddonVisible("WKSRecipeNotebook")
+end
 
 function WKSRecipeNotebook:wait_until_visible()
     self.ferret:wait_for_addon("WKSRecipeNotebook")

@@ -1,8 +1,6 @@
 ExtractMateria = Plugin:extend()
 
-function ExtractMateria:new()
-    ExtractMateria.super:new("Extract Materia")
-end
+function ExtractMateria:new() ExtractMateria.super:new("Extract Materia") end
 
 function ExtractMateria:pre_loop(ferret)
     ferret.logger:debug('Checking if materia needs to be extracted')

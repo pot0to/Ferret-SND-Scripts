@@ -1,3 +1,1 @@
-GatheringNodes = {
-    LushVegatationPatch = 'Lush Vegetation Patch'
-}
+GatheringNodes = {LushVegatationPatch = 'Lush Vegetation Patch'}

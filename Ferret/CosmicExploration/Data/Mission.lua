@@ -99,7 +99,10 @@ end
 
 function Mission:wait_for_crafting_ui_or_normal()
     FERRET.logger:debug("Waiting for Crafting ui or normal status")
-    FERRET:wait_until(function() return FERRET.cosmic_exploration.recipe_notebook_hud:is_visible() or FERRET.character:has_condition(Conditions.Normal) end)
+    FERRET:wait_until(function()
+        return FERRET.cosmic_exploration.recipe_notebook_hud:is_visible() or
+                   FERRET.character:has_condition(Conditions.Normal)
+    end)
     FERRET:wait(1)
     FERRET.logger:debug("Finished waiting for Crafting ui or normal status")
 end
@@ -108,14 +111,13 @@ function Mission:handle()
     FERRET.logger:debug("Starting mission: " .. self.name:get(FERRET.language))
     if not self.has_multiple_recipes then
         FERRET.logger:debug("Only 1 recipe")
-        FERRET:repeat_until(
-            function() 
-                if FERRET.cosmic_exploration.recipe_notebook_hud:is_visible() then
-                    FERRET.cosmic_exploration.recipe_notebook_hud:synthesize()
-                end
-            end,
-            function() return FERRET.character:has_condition(Conditions.Normal) end
-        )
+        FERRET:repeat_until(function()
+            if FERRET.cosmic_exploration.recipe_notebook_hud:is_visible() then
+                FERRET.cosmic_exploration.recipe_notebook_hud:synthesize()
+            end
+        end, function()
+            return FERRET.character:has_condition(Conditions.Normal)
+        end)
 
     else
         FERRET.logger:debug("Multiple recipe")
@@ -125,26 +127,30 @@ function Mission:handle()
             for index, count in pairs(self.multi_craft_config) do
                 FERRET.logger:debug("Starting outer loop")
                 self:wait_for_crafting_ui_or_normal()
-                if not started or not FERRET.character:has_condition(Conditions.Normal) then
+                if not started or
+                    not FERRET.character:has_condition(Conditions.Normal) then
                     FERRET.cosmic_exploration.recipe_notebook_hud:wait_until_visible()
                     FERRET:wait(1)
                     FERRET.logger:debug("Setting craft index to: " .. index)
-                    FERRET.cosmic_exploration.recipe_notebook_hud:set_index(index)
+                    FERRET.cosmic_exploration.recipe_notebook_hud:set_index(
+                        index)
                     for i = 1, count do
                         self:wait_for_crafting_ui_or_normal()
                         FERRET.logger:debug("Starting inner loop")
-                        if not started or not FERRET.character:has_condition(Conditions.Normal) then
+                        if not started or
+                            not FERRET.character:has_condition(Conditions.Normal) then
                             started = true
 
                             FERRET.cosmic_exploration.recipe_notebook_hud:wait_until_visible()
                             FERRET:wait(1)
-                            FERRET.logger:debug("Crafting: (" .. i .. "/" .. count .. ")")
+                            FERRET.logger:debug(
+                                "Crafting: (" .. i .. "/" .. count .. ")")
                             FERRET.cosmic_exploration.recipe_notebook_hud:set_hq()
                             FERRET:wait(1)
                             FERRET.cosmic_exploration.recipe_notebook_hud:synthesize()
                             FERRET:wait(1)
                         end
-                        
+
                         FERRET.logger:debug("Inner loop done")
                     end
                 end
@@ -171,10 +177,6 @@ end
 
 function Mission:to_string()
     return string.format(
-        "Mission [\n    ID: %s,\n    Name: %s,\n    Job: %s,\n    Class: %s\n]",
-        self.id,
-        self.name:get(FERRET.language),
-        self.job,
-        self.class
-    );
+               "Mission [\n    ID: %s,\n    Name: %s,\n    Job: %s,\n    Class: %s\n]",
+               self.id, self.name:get(FERRET.language), self.job, self.class);
 end

@@ -5,7 +5,6 @@ MissionOrder = {
     Random = 2 -- Execute missions in random order
 }
 
-
 StellarMissions = Ferret:extend()
 function StellarMissions:new()
     StellarMissions.super:new("Stellar Missions Template")
@@ -16,9 +15,8 @@ function StellarMissions:new()
     self.template_version = Version:new(2, 0, 0);
 end
 
-function StellarMissions:setup() 
-    self.logger:info("Steller Missoins " ..
-                            self.template_version:to_string())
+function StellarMissions:setup()
+    self.logger:info("Steller Missoins " .. self.template_version:to_string())
 
     if self.job == nil then
         self.logger:error('Job not set')
@@ -29,12 +27,12 @@ function StellarMissions:setup()
 
     self.cosmic_exploration:set_job(self.job)
 
-
     local error = false
     self.logger:debug("Found missions:")
     local actual_missions = MissionList:new()
     for _, mission in pairs(self.mission_list) do
-        local found_mission = self.cosmic_exploration.mission_list:find_by_name(mission)
+        local found_mission = self.cosmic_exploration.mission_list:find_by_name(
+                                  mission)
 
         if found_mission ~= nil then
             self.logger:debug(mission .. ": " .. found_mission:to_string())
@@ -48,12 +46,10 @@ function StellarMissions:setup()
     self.mission_list = actual_missions
     if error then return false end
 
-
     return true
 end
 
-
-function StellarMissions:loop() 
+function StellarMissions:loop()
     self.logger:debug('Starting loop')
 
     self.cosmic_exploration.main_hud:wait_until_visible()
@@ -62,8 +58,8 @@ function StellarMissions:loop()
     self.cosmic_exploration.mission_hud:open_basic_missions()
     self:wait(1)
 
-
-    local available_missions = self.cosmic_exploration.mission_hud:get_available_missions()
+    local available_missions =
+        self.cosmic_exploration.mission_hud:get_available_missions()
     local mission_list = available_missions:get_overlap(self.mission_list)
 
     if self:get_table_length(mission_list.missions) <= 0 then
@@ -79,7 +75,7 @@ function StellarMissions:loop()
         local mission = class_missions:random()
 
         self.logger:debug("mission: " .. mission:to_string())
-        
+
         mission:start()
         self.cosmic_exploration.recipe_notebook_hud:wait_until_visible()
         self:wait(1)
@@ -101,7 +97,7 @@ function StellarMissions:loop()
             self:stop()
             return
         end
-    
+
         self.logger:debug("mission: " .. mission:to_string())
         mission:start()
         self.cosmic_exploration.recipe_notebook_hud:wait_until_visible()
