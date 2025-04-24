@@ -19,3 +19,16 @@ ferret.stellar_missions.mission_list = {
 
 ferret:start()
 ```
+
+
+### Plugins
+```
+require("Ferret/Templates/StellarMissions") -- example
+require("Ferret/Plugins/ExtractMateria")
+require("Ferret/Plugins/Repair")
+
+ferret:add_plugin(ExtractMateria())
+ferret:add_plugin(Repair())
+
+ferret.name = 'Stellar Missions' -- example
+```
