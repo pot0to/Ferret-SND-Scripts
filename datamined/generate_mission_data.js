@@ -140,6 +140,12 @@ function parse_recipes(recipe_link, recipes) {
 }
 
 function parse_multi_craft_config(config) {
+  const sortedEntries = Object.entries(config).sort((a, b) => b[1] - a[1]);
+  config = {};
+  sortedEntries.forEach(([key, value], index) => {
+    config[index] = value;
+  });
+
   let output = "{";
 
   for (const [key, value] of Object.entries(config)) {
