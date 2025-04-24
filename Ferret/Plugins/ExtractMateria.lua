@@ -14,6 +14,11 @@ function ExtractMateria:pre_loop(ferret)
     yield('/waitaddon Materialize')
     while CanExtractMateria(100) do
         yield('/callback Materialize true 2')
+        while not IsAddonReady("MaterializeDialog") do ferret:wait(0.1) end
+        repeat
+            yield('/callback MaterializeDialog true 0')
+            ferret:wait(0.5)
+        until not IsAddonReady("MaterializeDialog")
         ferret:wait_until(function() return not GetCharacterCondition(39) end)
     end
 

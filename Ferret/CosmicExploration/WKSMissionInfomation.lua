@@ -24,4 +24,10 @@ end
 function WKSMissionInfomation:abandon()
     self:wait_until_visible()
     yield("/callback WKSMissionInfomation true 12")
+    repeat
+        if IsAddonReady("SelectYesno") then
+            yield("/callback SelectYesno true 0")
+        end
+        self.ferret:wait(0.1)
+    until not IsAddonReady("WKSMissionInfomation")
 end

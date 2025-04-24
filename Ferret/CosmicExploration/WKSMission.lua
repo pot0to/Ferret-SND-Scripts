@@ -15,6 +15,12 @@ function WKSMission:wait_until_visible() self.ferret:wait_for_addon("WKSMission"
 function WKSMission:start_mission(id)
     self:wait_until_visible()
     yield("/callback WKSMission true 13 " .. id)
+    repeat
+        if IsAddonReady("SelectYesno") then
+            yield("/callback SelectYesno true 0")
+        end
+        self.ferret:wait(0.1)
+    until not IsAddonReady("WKSMission")
 end
 
 function WKSMission:open()
