@@ -103,8 +103,8 @@ function StellarMissions:loop()
         self.cosmic_exploration.recipe_notebook_hud:wait_until_ready()
 
         if self.food_to_eat ~= "" then
-            FERRET.food.should_eat = true
-            FERRET.food.food = self.food_to_eat
+            self.food.should_eat = true
+            self.food.food = self.food_to_eat
         end
 
         FERRET.food:eat()
