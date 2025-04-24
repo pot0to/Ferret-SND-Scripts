@@ -85,8 +85,8 @@ end
 function Ferret:pre_loop()
     self.character:extract_materia()
     self.character:repair()
-    self.food:eat()
-    self.retainers:check()
+    -- self.food:eat()
+    -- self.retainers:check()
 end
 
 function Ferret:start()

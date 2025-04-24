@@ -1,7 +1,7 @@
 require("Ferret/Node")
 
 Retainers = {
-    enabled = false,
+    enabled = true,
     teleport = 'Solution Nine',
     bellNode = create_node(-150.1, 0.7, -13.7)
 }

@@ -129,7 +129,7 @@ end
 
 function Character:repair()
     self.ferret.logger:debug('Checking if gear needs repairing')
-    if not NeedsRepair(50) then
+    if not NeedsRepair(100) then
         self.ferret.logger:debug('Gear does not need repairing')
         return
     end
@@ -137,20 +137,20 @@ function Character:repair()
     self.ferret.logger:debug('Repairing')
     while not IsAddonVisible('Repair') do
         yield('/ac repair')
-        wait(0.5)
+        self.ferret:wait(0.5)
     end
 
     yield('/callback Repair true 0')
-    wait(0.1)
+    self.ferret:wait(0.1)
 
     if IsAddonVisible('SelectYesno') then
         yield('/callback SelectYesno true 0')
-        wait(0.1)
+        self.ferret:wait(0.1)
     end
 
-    while GetCharacterCondition(39) do wait(1) end
+    while GetCharacterCondition(39) do self.ferret:wait(1) end
 
-    wait(1)
+    self.ferret:wait(1)
     yield('/callback Repair true -1')
 
     self.ferret.logger:debug('   > Done')

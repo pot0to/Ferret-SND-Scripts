@@ -125,11 +125,39 @@ function Ferret:loop()
     self.logger:debug('Mission started')
 
     if self.cosmic_exploration:has_multiple_items_to_craft() then
-        self.logger:debug('Multiple items to craft, user take over')
-        -- Let user handle crafting if there are multiple items
-        self:wait_until(function()
-            self.cosmic_exploration:has_finished_mission()
-        end)
+        if mission_data.multi_craft_config ~= nil then
+            self.logger:debug('Using multi craft config')
+
+            local craft_index = 0
+            repeat
+                local crafts_required =
+                    mission_data.multi_craft_config[craft_index]
+                local crafts_complete = 0
+                self.logger:debug('Crafting item ' .. craft_index)
+                self.cosmic_exploration:select_craft(craft_index)
+                self:wait(1)
+                repeat
+                    self:wait_for_addon('WKSRecipeNotebook')
+                    self:wait(1)
+                    self.logger:debug('Starting craft...')
+                    self.cosmic_exploration:start_craft()
+                    self.logger:debug('Waiting to start craft...')
+                    self:wait_for_addon('Synthesis')
+                    self.logger:debug('Waiting to finish craft...')
+
+                    crafts_complete = crafts_complete + 1
+                    self.logger:debug('Crafts complete (' .. crafts_complete ..
+                                          '/' .. crafts_required .. ')')
+                until crafts_complete >= crafts_required
+                craft_index = craft_index + 1
+            until craft_index > #mission_data.multi_craft_config
+        else
+            self.logger:debug('Multiple items to craft, user take over')
+            -- Let user handle crafting if there are multiple items
+            self:wait_until(function()
+                self.cosmic_exploration:has_finished_mission()
+            end)
+        end
     else
         self.logger:debug('Single item to craft, starting crafting')
         self:repeat_until(function()
