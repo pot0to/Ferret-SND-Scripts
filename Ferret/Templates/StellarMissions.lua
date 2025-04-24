@@ -49,13 +49,13 @@ function StellarMissions:setup()
     self.mission_list = actual_missions
     if error then return false end
 
+    PauseYesAlready()
+
     return true
 end
 
 function StellarMissions:loop()
     self.logger:debug('Starting loop')
-
-    PauseYesAlready()
 
     self.cosmic_exploration.main_hud:wait_until_ready()
 
