@@ -112,7 +112,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(1, 2, 9))
         :with_exp_reward(MissionReward:new(1, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 2, [1] = 2, }),
+        :with_multi_craft_config({[0] = 1, [1] = 1, }),
     [12] = Mission:new(12, Name:new("Cosmoliner Supplies"), Jobs.Carpenter, "C")
         :with_de_name("Kosmozapper-Grundkomponenten")
         :with_fr_name("Matériaux pour cosmo-navette")
@@ -209,7 +209,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(1, 2, 5))
         :with_exp_reward(MissionReward:new(1, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [21] = Mission:new(21, Name:new("High-quality Rest Beds"), Jobs.Carpenter, "B")
         :with_de_name("Hochwertige Betten")
         :with_fr_name("Literie d'excellente qualité")
@@ -222,7 +222,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(1, 2, 6))
         :with_exp_reward(MissionReward:new(1, 1, 6))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [22] = Mission:new(22, Name:new("A-1: High-durability Fiberboard"), Jobs.Carpenter, "A")
         :with_de_name("A-1: Hochbelastbare Faserplatten")
         :with_fr_name("A-1 : Planches en bois aggloméré résistantes")
@@ -636,7 +636,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(2, 2, 7))
         :with_exp_reward(MissionReward:new(2, 1, 7))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 3, }),
+        :with_multi_craft_config({[0] = 3, [1] = 1, }),
     [58] = Mission:new(58, Name:new("Insulated Equipment"), Jobs.Blacksmith, "C")
         :with_de_name("Isolierungsvorrichtungen")
         :with_fr_name("Équipements isolants")
@@ -648,7 +648,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(2, 2, 5))
         :with_exp_reward(MissionReward:new(2, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [59] = Mission:new(59, Name:new("Rover Shafts"), Jobs.Blacksmith, "B")
         :with_de_name("Übertragungsachse (Vehikel)")
         :with_fr_name("Axes de transmission pour rover")
@@ -721,7 +721,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(2, 2, 5))
         :with_exp_reward(MissionReward:new(2, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [66] = Mission:new(66, Name:new("Lunar Material Part Processing"), Jobs.Blacksmith, "B")
         :with_de_name("Veredlung von Mondgüterbauteilen")
         :with_fr_name("Élaboration de pièces en matériaux séléniens")
@@ -734,7 +734,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(2, 2, 6))
         :with_exp_reward(MissionReward:new(2, 1, 6))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [67] = Mission:new(67, Name:new("A-1: Key Facility Plating"), Jobs.Blacksmith, "A")
         :with_de_name("A-1: Stationsstruktur-Projektplatten")
         :with_fr_name("A-1 : Plaques pour infrastructure cruciale")
@@ -1148,7 +1148,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(3, 2, 7))
         :with_exp_reward(MissionReward:new(3, 1, 7))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 3, }),
+        :with_multi_craft_config({[0] = 3, [1] = 1, }),
     [103] = Mission:new(103, Name:new("Insulated Equipment"), Jobs.Armorer, "C")
         :with_de_name("Isolierungsvorrichtungen")
         :with_fr_name("Équipements isolants")
@@ -1160,7 +1160,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(3, 2, 5))
         :with_exp_reward(MissionReward:new(3, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [104] = Mission:new(104, Name:new("Rover Parts"), Jobs.Armorer, "B")
         :with_de_name("Einzelteile (Vehikel)")
         :with_fr_name("Pièces pour rover")
@@ -1233,7 +1233,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(3, 2, 5))
         :with_exp_reward(MissionReward:new(3, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [111] = Mission:new(111, Name:new("Lunar Material Part Processing"), Jobs.Armorer, "B")
         :with_de_name("Veredlung von Mondgüterbauteilen")
         :with_fr_name("Élaboration de pièces en matériaux séléniens")
@@ -1246,7 +1246,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(3, 2, 6))
         :with_exp_reward(MissionReward:new(3, 1, 6))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [112] = Mission:new(112, Name:new("A-1: Key Facility Plating"), Jobs.Armorer, "A")
         :with_de_name("A-1: Stationsstruktur-Projektplatten")
         :with_fr_name("A-1 : Plaques pour infrastructure cruciale")
@@ -1636,7 +1636,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(4, 2, 4))
         :with_exp_reward(MissionReward:new(4, 1, 6))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [146] = Mission:new(146, Name:new("Eye Protection Equipment"), Jobs.Goldsmith, "C")
         :with_de_name("Augenschutz-Ausrüstung")
         :with_fr_name("Protections pour les yeux")
@@ -1660,7 +1660,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(4, 2, 7))
         :with_exp_reward(MissionReward:new(4, 1, 7))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 3, }),
+        :with_multi_craft_config({[0] = 3, [1] = 1, }),
     [148] = Mission:new(148, Name:new("Heat Dissipation Equipment"), Jobs.Goldsmith, "C")
         :with_de_name("Abwärmevorrichtungen")
         :with_fr_name("Équipements thermorésistants")
@@ -1672,7 +1672,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(4, 2, 5))
         :with_exp_reward(MissionReward:new(4, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [149] = Mission:new(149, Name:new("Rover Parts"), Jobs.Goldsmith, "B")
         :with_de_name("Einzelteile (Vehikel)")
         :with_fr_name("Pièces pour rover")
@@ -1745,7 +1745,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(4, 2, 5))
         :with_exp_reward(MissionReward:new(4, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [156] = Mission:new(156, Name:new("Lunar Material Part Processing"), Jobs.Goldsmith, "B")
         :with_de_name("Veredlung von Mondgüterbauteilen")
         :with_fr_name("Élaboration de pièces en matériaux séléniens")
@@ -1758,7 +1758,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(4, 2, 6))
         :with_exp_reward(MissionReward:new(4, 1, 6))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [157] = Mission:new(157, Name:new("A-1: Key Facility Plating"), Jobs.Goldsmith, "A")
         :with_de_name("A-1: Stationsstruktur-Projektplatten")
         :with_fr_name("A-1 : Plaques pour infrastructure cruciale")
@@ -2257,7 +2257,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(5, 2, 5))
         :with_exp_reward(MissionReward:new(5, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [201] = Mission:new(201, Name:new("High-grade Rest Lounges"), Jobs.Leatherworker, "B")
         :with_de_name("Hochwertiger Pausen-Sessel")
         :with_fr_name("Mobilier de relaxation d'excellente qualité")
@@ -2270,7 +2270,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(5, 2, 6))
         :with_exp_reward(MissionReward:new(5, 1, 6))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [202] = Mission:new(202, Name:new("A-1: High-durability Leather String"), Jobs.Leatherworker, "A")
         :with_de_name("A-1: Hochbelastbare Lederriemen")
         :with_fr_name("A-1 : Lanières de cuir résistantes")
@@ -2769,7 +2769,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(6, 2, 5))
         :with_exp_reward(MissionReward:new(6, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [246] = Mission:new(246, Name:new("Rest Cushions"), Jobs.Weaver, "B")
         :with_de_name("Pausenraum-Sitzkissen")
         :with_fr_name("Coussins de relaxation")
@@ -2782,7 +2782,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(6, 2, 6))
         :with_exp_reward(MissionReward:new(6, 1, 6))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 2, }),
+        :with_multi_craft_config({[0] = 2, [1] = 1, }),
     [247] = Mission:new(247, Name:new("A-1: High-durability Yarn"), Jobs.Weaver, "A")
         :with_de_name("A-1: Hochbelastbares Baumwollgarn")
         :with_fr_name("A-1 : Pelotes de fil résistant")
@@ -4525,5 +4525,4 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(8, 4, 20))
         :with_exp_reward(MissionReward:new(8, 2, 12))
         :with_exp_reward(MissionReward:new(8, 1, 12)),
-
 }
