@@ -22,3 +22,5 @@ function ExtractMateria:pre_loop(ferret)
     yield('/callback Materialize true -1')
     ferret.logger:debug("Extracted all materia")
 end
+
+FERRET:add_plugin(ExtractMateria())

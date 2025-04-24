@@ -6,44 +6,34 @@ MissionOrder = {
 }
 
 
-StellarMissions = Object:extend()
-function StellarMissions:new(ferret)
-    o = {}
-    setmetatable(o, self)
-    self.__index = self
-    self.ferret = ferret
+StellarMissions = Ferret:extend()
+function StellarMissions:new()
+    StellarMissions.super:new("Stellar Missions Template")
 
     self.mission_list = {};
     self.mission_order = MissionOrder.TopPriority;
     self.job = nil;
-    self.version = Version:new(2, 0, 0);
-
-    return o
+    self.template_version = Version:new(2, 0, 0);
 end
 
-ferret = Ferret:new("Stellar Missions Template")
-ferret:init()
-
-ferret.stellar_missions = StellarMissions:new(ferret)
-
-function Ferret:setup()
+function StellarMissions:setup() 
     self.logger:info("Steller Missoins " ..
-                         self.stellar_missions.version:to_string())
+                            self.template_version:to_string())
 
-    if self.stellar_missions.job == nil then
+    if self.job == nil then
         self.logger:error('Job not set')
         self.logger:info(
-            "Please set `ferret.stellar_missions.job = Jobs.Carpenter` etc.")
+            "Please set `stellar_missions.job = Jobs.Carpenter` etc.")
         return false
     end
 
-    self.cosmic_exploration:set_job(self.stellar_missions.job)
+    self.cosmic_exploration:set_job(self.job)
 
 
     local error = false
     self.logger:debug("Found missions:")
     local actual_missions = MissionList:new()
-    for _, mission in pairs(self.stellar_missions.mission_list) do
+    for _, mission in pairs(self.mission_list) do
         local found_mission = self.cosmic_exploration.mission_list:find_by_name(mission)
 
         if found_mission ~= nil then
@@ -55,14 +45,15 @@ function Ferret:setup()
         end
     end
 
-    self.stellar_missions.mission_list = actual_missions
+    self.mission_list = actual_missions
     if error then return false end
 
 
     return true
 end
 
-function Ferret:loop()
+
+function StellarMissions:loop() 
     self.logger:debug('Starting loop')
 
     self.cosmic_exploration.main_hud:wait_until_visible()
@@ -73,11 +64,11 @@ function Ferret:loop()
 
 
     local available_missions = self.cosmic_exploration.mission_hud:get_available_missions()
-    local mission_list = available_missions:get_overlap(self.stellar_missions.mission_list)
+    local mission_list = available_missions:get_overlap(self.mission_list)
 
     if self:get_table_length(mission_list.missions) <= 0 then
         local classes = {}
-        for _, mission in pairs(self.stellar_missions.mission_list.missions) do
+        for _, mission in pairs(self.mission_list.missions) do
             if not self:table_contains(classes, mission.class) then
                 table.insert(classes, mission.class)
             end
@@ -97,7 +88,20 @@ function Ferret:loop()
         return
     else
         self.logger:debug("Selection mission to run")
-        local mission = mission_list:random()
+        -- local mission = mission_list:random()
+        local mission = nil
+        if self.mission_order == MissionOrder.TopPriority then
+            mission = mission_list:first()
+        elseif self.mission_order == MissionOrder.Random then
+            mission = mission_list:random()
+        end
+
+        if mission == nil then
+            self.logger:error("Error getting a mission.")
+            self:stop()
+            return
+        end
+    
         self.logger:debug("mission: " .. mission:to_string())
         mission:start()
         self.cosmic_exploration.recipe_notebook_hud:wait_until_visible()
@@ -107,3 +111,10 @@ function Ferret:loop()
         mission:report()
     end
 end
+
+local stellar_missions = StellarMissions()
+stellar_missions:init()
+stellar_missions.name = 'Stellar Missions'
+FERRET = stellar_missions
+
+return stellar_missions

@@ -32,3 +32,5 @@ function Repair:pre_loop(ferret)
     yield('/callback Repair true -1')
     ferret.logger:debug("Repaired all gear")
 end
+
+FERRET:add_plugin(Repair())

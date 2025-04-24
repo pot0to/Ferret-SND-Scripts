@@ -37,7 +37,7 @@ end
 
 function MissionList:find_by_name(name, lang)
     for _, mission in pairs(self.missions) do
-        local start_index = string.find(mission.name:get(ferret.language), name, 0, true)
+        local start_index = string.find(mission.name:get(FERRET.language), name, 0, true)
 
         if start_index ~= nil and start_index <= 4 then
             return mission; 
@@ -63,7 +63,7 @@ function MissionList:random()
     end
 
     local key = keys[math.random(1, #keys)]
-    ferret.logger:info("key: " .. key)
+    FERRET.logger:info("key: " .. key)
     return self.missions[key]
 end
 
@@ -76,7 +76,6 @@ function MissionList:get_overlap(other)
 
     for _, mission in pairs(self.missions) do
         if other:has_id(mission.id) then
-            -- ferret.logger:debug(mission or "NA")
             overlap.missions[mission.id] = mission
         end
     end
