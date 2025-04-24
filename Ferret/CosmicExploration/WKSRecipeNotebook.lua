@@ -8,25 +8,30 @@ function WKSRecipeNotebook:new(ferret)
     return o
 end
 
-function WKSRecipeNotebook:is_visible()
-    return IsAddonVisible("WKSRecipeNotebook")
+function WKSRecipeNotebook:is_ready()
+    return IsAddonReady("WKSRecipeNotebook")
 end
 
-function WKSRecipeNotebook:wait_until_visible()
-    self.ferret:wait_for_addon("WKSRecipeNotebook")
+function WKSRecipeNotebook:wait_until_ready()
+    self.ferret:wait_for_ready_addon("WKSRecipeNotebook")
 end
 
 function WKSRecipeNotebook:set_index(index)
-    self:wait_until_visible()
+    self:wait_until_ready()
     yield("/callback WKSRecipeNotebook true 0 " .. index)
 end
 
 function WKSRecipeNotebook:set_hq()
-    self:wait_until_visible()
+    self:wait_until_ready()
     yield("/callback WKSRecipeNotebook true 5")
 end
 
 function WKSRecipeNotebook:synthesize()
-    self:wait_until_visible()
-    yield("/callback WKSRecipeNotebook true 6")
+    self:wait_until_ready()
+    repeat
+        if IsAddonReady("WKSRecipeNotebook") then
+            yield("/callback WKSRecipeNotebook true 6")
+        end
+        self.ferret:wait(0.1)
+    until not IsAddonVisible("WKSRecipeNotebook")
 end

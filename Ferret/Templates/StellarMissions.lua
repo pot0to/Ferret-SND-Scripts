@@ -15,7 +15,7 @@ function StellarMissions:new()
     self.tincture_to_drink = nil;
     self.food_to_eat = nil;
     self.job = nil;
-    self.template_version = Version:new(2, 0, 1);
+    self.template_version = Version:new(2, 0, 2);
 end
 
 function StellarMissions:setup()
@@ -57,11 +57,9 @@ function StellarMissions:loop()
 
     PauseYesAlready()
 
-    self.cosmic_exploration.main_hud:wait_until_visible()
-    self:wait(1)
+    self.cosmic_exploration.main_hud:wait_until_ready()
 
     self.cosmic_exploration.mission_hud:open_basic_missions()
-    self:wait(1)
 
     local available_missions =
         self.cosmic_exploration.mission_hud:get_available_missions()
@@ -82,10 +80,7 @@ function StellarMissions:loop()
         self.logger:debug("mission: " .. mission:to_string())
 
         mission:start()
-        self.cosmic_exploration.recipe_notebook_hud:wait_until_visible()
-        self:wait(1)
         mission:abandon()
-        self:wait(1)
         return
     else
         self.logger:debug("Selection mission to run")
@@ -105,18 +100,18 @@ function StellarMissions:loop()
 
         self.logger:debug("mission: " .. mission:to_string())
         mission:start()
-        self.cosmic_exploration.recipe_notebook_hud:wait_until_visible()
-        self:wait(1)
+        self.cosmic_exploration.recipe_notebook_hud:wait_until_ready()
+
         if self.food_to_eat ~= "" then
             FERRET.food.should_eat = true
             FERRET.food.food = self.food_to_eat
         end
+
         FERRET.food:eat()
         if self.tincture_to_drink ~= "" then
-            
+
         end
         mission:handle()
-        -- self:wait(1)
         mission:report()
     end
 end

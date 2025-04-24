@@ -8,26 +8,35 @@ function WKSMissionInfomation:new(ferret)
     return o
 end
 
-function WKSMissionInfomation:is_visible()
-    return IsAddonVisible("WKSMissionInfomation")
+function WKSMissionInfomation:is_ready()
+    return IsAddonReady("WKSMissionInfomation")
 end
 
-function WKSMissionInfomation:wait_until_visible()
-    self.ferret:wait_for_addon("WKSMissionInfomation")
+function WKSMissionInfomation:wait_until_ready()
+    self.ferret:wait_for_ready_addon("WKSMissionInfomation")
 end
 
 function WKSMissionInfomation:report()
-    self:wait_until_visible()
-    yield("/callback WKSMissionInfomation true 11")
+    self:wait_until_ready()
+    repeat
+        if IsAddonReady("WKSMissionInfomation") then
+            yield("/callback WKSMissionInfomation true 11")
+        end
+        self.ferret:wait(0.3)
+    until not IsAddonVisible("WKSMissionInfomation")
 end
 
 function WKSMissionInfomation:abandon()
-    self:wait_until_visible()
-    yield("/callback WKSMissionInfomation true 12")
+    repeat
+        if IsAddonReady("WKSMissionInfomation") then
+            yield("/callback WKSMissionInfomation true 12")
+        end
+        self.ferret:wait(0.1)
+    until IsAddonVisible("SelectYesno")
     repeat
         if IsAddonReady("SelectYesno") then
             yield("/callback SelectYesno true 0")
         end
         self.ferret:wait(0.1)
-    until not IsAddonReady("WKSMissionInfomation")
+    until not IsAddonVisible("WKSMissionInfomation")
 end

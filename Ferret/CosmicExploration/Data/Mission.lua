@@ -92,15 +92,15 @@ function Mission:with_multi_craft_config(config)
 end
 
 function Mission:start()
-    FERRET.cosmic_exploration.mission_hud:wait_until_visible()
-    FERRET:wait(2)
+    FERRET.cosmic_exploration.mission_hud:wait_until_ready()
+    -- FERRET:wait(2)
     FERRET.cosmic_exploration.mission_hud:start_mission(self.id)
 end
 
 function Mission:wait_for_crafting_ui_or_normal()
     FERRET.logger:debug("Waiting for Crafting ui or normal status")
     FERRET:wait_until(function()
-        return FERRET.cosmic_exploration.recipe_notebook_hud:is_visible() or
+        return FERRET.cosmic_exploration.recipe_notebook_hud:is_ready() or
                    FERRET.character:has_condition(Conditions.Normal)
     end)
     FERRET:wait(1)
@@ -112,7 +112,7 @@ function Mission:handle()
     if not self.has_multiple_recipes then
         FERRET.logger:debug("Only 1 recipe")
         FERRET:repeat_until(function()
-            if FERRET.cosmic_exploration.recipe_notebook_hud:is_visible() then
+            if FERRET.cosmic_exploration.recipe_notebook_hud:is_ready() then
                 FERRET.cosmic_exploration.recipe_notebook_hud:synthesize()
             end
         end, function()
@@ -129,8 +129,8 @@ function Mission:handle()
                 self:wait_for_crafting_ui_or_normal()
                 if not started or
                     not FERRET.character:has_condition(Conditions.Normal) then
-                    FERRET.cosmic_exploration.recipe_notebook_hud:wait_until_visible()
-                    FERRET:wait(1)
+                    FERRET.cosmic_exploration.recipe_notebook_hud:wait_until_ready()
+                    FERRET:wait(0.5)
                     FERRET.logger:debug("Setting craft index to: " .. index)
                     FERRET.cosmic_exploration.recipe_notebook_hud:set_index(
                         index)
@@ -141,14 +141,14 @@ function Mission:handle()
                             not FERRET.character:has_condition(Conditions.Normal) then
                             started = true
 
-                            FERRET.cosmic_exploration.recipe_notebook_hud:wait_until_visible()
-                            FERRET:wait(1)
+                            FERRET.cosmic_exploration.recipe_notebook_hud:wait_until_ready()
+                            -- FERRET:wait(1)
                             FERRET.logger:debug(
                                 "Crafting: (" .. i .. "/" .. count .. ")")
                             FERRET.cosmic_exploration.recipe_notebook_hud:set_hq()
-                            FERRET:wait(1)
+                            FERRET:wait(0.5)
                             FERRET.cosmic_exploration.recipe_notebook_hud:synthesize()
-                            FERRET:wait(1)
+                            FERRET:wait(0.5)
                         end
 
                         FERRET.logger:debug("Inner loop done")
@@ -165,13 +165,14 @@ end
 
 function Mission:report()
     FERRET.cosmic_exploration.main_hud:open_mission_menu()
-    FERRET:wait(2)
+    FERRET:wait(0.5)
     FERRET.cosmic_exploration.mission_information_hud:report()
 end
 
 function Mission:abandon()
+    yield("/e :(")
     FERRET.cosmic_exploration.main_hud:open_mission_menu()
-    FERRET:wait(2)
+    FERRET:wait(0.5)
     FERRET.cosmic_exploration.mission_information_hud:abandon()
 end
 

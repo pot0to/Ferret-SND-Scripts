@@ -29,7 +29,7 @@ function Ferret:new(name)
 end
 
 function Ferret:init()
-    self.version = Version:new(0, 2, 0)
+    self.version = Version:new(0, 2, 1)
     self.character = Character:new(self)
     self.food = Food:new(self)
     self.gatherBuddy = GatherBuddy:new(self)
@@ -81,6 +81,12 @@ function Ferret:wait_for_addon(addon)
     self.logger:debug('Waiting for addon: ' .. addon)
     self:wait_until(function() return IsAddonVisible(addon) end)
     self.logger:debug('Addon ' .. addon .. ' is now visible')
+end
+
+function Ferret:wait_for_ready_addon(addon)
+    self.logger:debug('Waiting for ready addon: ' .. addon)
+    self:wait_until(function() return IsAddonReady(addon) end)
+    self.logger:debug('Addon ' .. addon .. ' is now visible and ready')
 end
 
 function Ferret:stop() self.run = false end
