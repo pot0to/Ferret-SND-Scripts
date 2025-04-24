@@ -107,32 +107,6 @@ function CosmicExploration:get_mission_id_from_name(name)
     return 0
 end
 
-function CosmicExploration:start_mission(id)
-    self:open_basic_mission_ui()
-    self.ferret:wait_for_addon("WKSMission")
-    -- self.ferret:wait(5)
-    yield("/callback WKSMission true 13 " .. id)
-end
-
-function CosmicExploration:report_mission()
-    if not IsAddonVisible("WKSMissionInfomation") then
-        yield("/callback WKSHud true 11")
-        self.ferret:wait_for_addon("WKSMissionInfomation")
-    end
-
-    self.ferret:wait(2)
-    yield("/callback WKSMissionInfomation true 11")
-end
-
-function CosmicExploration:abandon_mission()
-    if not IsAddonVisible("WKSMissionInfomation") then
-        yield("/callback WKSHud true 11")
-        self.ferret:wait_for_addon("WKSMissionInfomation")
-    end
-
-    yield("/callback WKSMissionInfomation true 12")
-end
-
 -- Get's the first mission available
 function CosmicExploration:get_first_available_mission_of_class(class)
     for id, datum in pairs(self.filtered_missions) do

@@ -1,4 +1,4 @@
-MissionReward = {}
+MissionReward = Object:extend()
 
 function MissionReward:new(job, tier, amount)
     local o = {}

@@ -1,3 +1,5 @@
+Object = require("external/classic")
+
 require("Ferret/Version")
 require("Ferret/Character")
 require("Ferret/Food")
@@ -11,9 +13,9 @@ require("Ferret/Retainers")
 require("Ferret/Spearfishing")
 require("Ferret/Timer")
 require("Ferret/World")
-require("Ferret/CosmicExploration")
+require("Ferret/CosmicExploration/CosmicExploration")
 
-Ferret = {}
+Ferret = Object:extend()
 function Ferret:new(name)
     o = {}
     setmetatable(o, self)
@@ -113,4 +115,24 @@ function Ferret:get_table_length(subject)
     for _ in pairs(subject) do count = count + 1 end
 
     return count
+end
+
+function Ferret:table_contains(table, value)
+    for _, v in pairs(table) do
+        if v == value then
+            return true
+        end
+    end
+    return false
+end
+
+
+function Ferret:table_random(subject)
+    local keys = {}
+    for key, _ in pairs(subject) do
+        table.insert(keys, key)
+    end
+
+    local key = keys[math.random(1, #keys)]
+    return subject[key]
 end

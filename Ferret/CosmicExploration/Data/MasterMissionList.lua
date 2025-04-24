@@ -112,7 +112,7 @@ MasterMissionList.missions = {
         :with_exp_reward(MissionReward:new(1, 2, 9))
         :with_exp_reward(MissionReward:new(1, 1, 5))
         :with_multiple_recipes()
-        :with_multi_craft_config({[0] = 1, [1] = 1, }),
+        :with_multi_craft_config({[0] = 2, [1] = 2, }),
     [12] = Mission:new(12, Name:new("Cosmoliner Supplies"), Jobs.Carpenter, "C")
         :with_de_name("Kosmozapper-Grundkomponenten")
         :with_fr_name("Matériaux pour cosmo-navette")

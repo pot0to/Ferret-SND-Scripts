@@ -26,3 +26,11 @@ function Name:with_jp(jp)
     self.jp = jp
     return self
 end
+
+function Name:get(language)
+    if language == 'de' then return self.de end
+    if language == 'fr' then return self.fr end
+    if language == 'jp' then return self.jp end
+
+    return self.en
+end

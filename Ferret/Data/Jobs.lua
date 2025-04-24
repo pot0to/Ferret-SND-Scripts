@@ -1,4 +1,5 @@
 Jobs = {
+    Unknown = -1,
     Carpenter = 8,
     Blacksmith = 9,
     Armorer = 10,
