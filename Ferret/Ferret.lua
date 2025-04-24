@@ -22,6 +22,7 @@ function Ferret:new(name)
     self.__index = self
     self.name = name
     self.run = true
+    self.language = 'en'
     return o
 end
 

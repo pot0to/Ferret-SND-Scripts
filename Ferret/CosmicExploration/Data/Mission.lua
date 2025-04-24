@@ -105,7 +105,7 @@ function Mission:wait_for_crafting_ui_or_normal()
 end
 
 function Mission:handle()
-    ferret.logger:debug("Starting mission: " .. self.name:get('en'))
+    ferret.logger:debug("Starting mission: " .. self.name:get(ferret.language))
     if not self.has_multiple_recipes then
         ferret.logger:debug("Only 1 recipe")
         ferret:repeat_until(
@@ -173,7 +173,7 @@ function Mission:to_string()
     return string.format(
         "Mission [\n    ID: %s,\n    Name: %s,\n    Job: %s,\n    Class: %s\n]",
         self.id,
-        self.name:get('en'),
+        self.name:get(ferret.language),
         self.job,
         self.class
     );

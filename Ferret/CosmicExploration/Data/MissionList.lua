@@ -37,7 +37,7 @@ end
 
 function MissionList:find_by_name(name, lang)
     for _, mission in pairs(self.missions) do
-        local start_index = string.find(mission.name:get('en'), name, 0, true)
+        local start_index = string.find(mission.name:get(ferret.language), name, 0, true)
 
         if start_index ~= nil and start_index <= 4 then
             return mission; 
