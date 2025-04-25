@@ -113,6 +113,7 @@ function StellarMissions:loop()
         end
         mission:handle()
         mission:report()
+        FERRET:wait(1)
     end
 end
 

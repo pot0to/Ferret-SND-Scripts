@@ -18,12 +18,7 @@ end
 
 function WKSMissionInfomation:report()
     self:wait_until_ready()
-    repeat
-        if IsAddonReady("WKSMissionInfomation") then
-            yield("/callback WKSMissionInfomation true 11")
-        end
-        self.ferret:wait(0.3)
-    until not IsAddonVisible("WKSMissionInfomation")
+    yield("/callback WKSMissionInfomation true 11")
 end
 
 function WKSMissionInfomation:abandon()

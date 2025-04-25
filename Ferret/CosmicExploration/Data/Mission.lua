@@ -170,7 +170,6 @@ function Mission:report()
 end
 
 function Mission:abandon()
-    yield("/e :(")
     FERRET.cosmic_exploration.main_hud:open_mission_menu()
     FERRET:wait(0.5)
     FERRET.cosmic_exploration.mission_information_hud:abandon()

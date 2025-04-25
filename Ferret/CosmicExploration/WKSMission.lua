@@ -10,6 +10,8 @@ end
 
 function WKSMission:is_ready() return IsAddonReady("WKSMission") end
 
+function WKSMission:is_visible() return IsAddonVisible("WKSMission") end
+
 function WKSMission:wait_until_ready() self.ferret:wait_for_ready_addon("WKSMission") end
 
 function WKSMission:start_mission(id)
