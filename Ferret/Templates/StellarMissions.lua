@@ -11,15 +11,15 @@ function StellarMissions:new()
 
     self.mission_list = {};
     self.mission_order = MissionOrder.TopPriority;
-    self.missions_to_tincture_on = {};
-    self.tincture_to_drink = nil;
+    self.missions_to_medicate_on = {};
+    self.medicine_to_drink = nil;
     self.food_to_eat = nil;
     self.job = nil;
     self.template_version = Version:new(2, 0, 2);
 end
 
 function StellarMissions:setup()
-    self.logger:info("Steller Missoins " .. self.template_version:to_string())
+    self.logger:info("Stellar missions " .. self.template_version:to_string())
 
     if self.job == nil then
         self.logger:error('Job not set')
@@ -72,7 +72,7 @@ function StellarMissions:loop()
                 table.insert(classes, mission.class)
             end
         end
-        self.logger:debug("Selection mission to abandon")
+        self.logger:debug("Selecting mission to abandon")
         local class = self:table_random(classes)
         local class_missions = available_missions:filter_by_class(class)
         local mission = class_missions:random()
@@ -83,7 +83,7 @@ function StellarMissions:loop()
         mission:abandon()
         return
     else
-        self.logger:debug("Selection mission to run")
+        self.logger:debug("Selecting mission to run")
         -- local mission = mission_list:random()
         local mission = nil
         if self.mission_order == MissionOrder.TopPriority then
@@ -107,13 +107,23 @@ function StellarMissions:loop()
             self.food.food = self.food_to_eat
         end
 
-        FERRET.food:eat()
-        if self.tincture_to_drink ~= "" then
+        self.food:eat()
 
+        if self.medicine_to_drink ~= "" then
+            self.medicine.should_medicate = true
+            self.medicine.medicine = self.medicine_to_drink
+            local mission_name = mission.name[self.language]
+
+            for _, missions_we_need_to_medicate_on in pairs(self.missions_to_use_medicine_on) do
+                if missions_we_need_to_medicate_on == mission_name then
+                    self.logger:debug("Mission needs medicine: " .. mission_name)
+                    self.medicine:medicate()
+                end
+            end
         end
+
         mission:handle()
         mission:report()
-        FERRET:wait(1)
     end
 end
 

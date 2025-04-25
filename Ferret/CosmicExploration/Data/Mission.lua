@@ -93,7 +93,6 @@ end
 
 function Mission:start()
     FERRET.cosmic_exploration.mission_hud:wait_until_ready()
-    -- FERRET:wait(2)
     FERRET.cosmic_exploration.mission_hud:start_mission(self.id)
 end
 
@@ -160,18 +159,16 @@ function Mission:handle()
         until FERRET.character:has_condition(Conditions.Normal)
     end
 
-    FERRET.logger:debug("Mission compelte")
+    FERRET.logger:debug("Mission complete")
 end
 
 function Mission:report()
     FERRET.cosmic_exploration.main_hud:open_mission_menu()
-    FERRET:wait(0.5)
     FERRET.cosmic_exploration.mission_information_hud:report()
 end
 
 function Mission:abandon()
     FERRET.cosmic_exploration.main_hud:open_mission_menu()
-    FERRET:wait(0.5)
     FERRET.cosmic_exploration.mission_information_hud:abandon()
 end
 
