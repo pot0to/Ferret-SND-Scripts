@@ -8,19 +8,34 @@ function WKSMission:new(ferret)
     return o
 end
 
+function WKSMission:is_ready() return IsAddonReady("WKSMission") end
+
 function WKSMission:is_visible() return IsAddonVisible("WKSMission") end
 
-function WKSMission:wait_until_visible() self.ferret:wait_for_addon("WKSMission") end
+function WKSMission:wait_until_ready() self.ferret:wait_for_ready_addon("WKSMission") end
 
 function WKSMission:start_mission(id)
-    self:wait_until_visible()
-    yield("/callback WKSMission true 13 " .. id)
+    self:wait_until_ready()
+
+    repeat
+        if IsAddonReady("WKSMission") then
+            yield("/callback WKSMission true 13 " .. id)
+        end
+        self.ferret:wait(0.1)
+    until IsAddonVisible("SelectYesno")
+
+    repeat
+        if IsAddonReady("SelectYesno") then
+            yield("/callback SelectYesno true 0")
+        end
+        self.ferret:wait(0.1)
+    until not IsAddonReady("WKSMission")
 end
 
 function WKSMission:open()
     self.ferret.logger:debug('Opening mission ui')
     self.ferret.cosmic_exploration.main_hud:open_mission_menu()
-    self:wait_until_visible()
+    self:wait_until_ready()
     self.ferret:wait(1)
 end
 

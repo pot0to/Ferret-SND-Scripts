@@ -4,6 +4,7 @@ require("Ferret/Version")
 require("Ferret/Plugins/Plugin")
 require("Ferret/Character")
 require("Ferret/Food")
+require("Ferret/Medicine")
 require("Ferret/GatherBuddy")
 require("Ferret/Gathering")
 require("Ferret/Gathering")
@@ -29,9 +30,10 @@ function Ferret:new(name)
 end
 
 function Ferret:init()
-    self.version = Version:new(0, 2, 0)
+    self.version = Version:new(0, 2, 2)
     self.character = Character:new(self)
     self.food = Food:new(self)
+    self.medicine = Medicine:new(self)
     self.gatherBuddy = GatherBuddy:new(self)
     self.gathering = Gathering:new(self)
     self.gathering = Gathering:new(self)
@@ -81,6 +83,12 @@ function Ferret:wait_for_addon(addon)
     self.logger:debug('Waiting for addon: ' .. addon)
     self:wait_until(function() return IsAddonVisible(addon) end)
     self.logger:debug('Addon ' .. addon .. ' is now visible')
+end
+
+function Ferret:wait_for_ready_addon(addon)
+    self.logger:debug('Waiting for ready addon: ' .. addon)
+    self:wait_until(function() return IsAddonReady(addon) end)
+    self.logger:debug('Addon ' .. addon .. ' is now visible and ready')
 end
 
 function Ferret:stop() self.run = false end

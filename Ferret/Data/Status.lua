@@ -1,1 +1,1 @@
-Status = {WellFed = 48}
+Status = {WellFed = 48, Medicated = 49}
