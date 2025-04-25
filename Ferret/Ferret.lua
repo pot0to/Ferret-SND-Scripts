@@ -35,7 +35,7 @@ function Ferret:new(name)
 end
 
 function Ferret:init()
-    self.version = Version:new(0, 2, 2)
+    self.version = Version:new(0, 3, 0)
     self.character = Character:new(self)
     self.food = Food:new(self)
     self.medicine = Medicine:new(self)

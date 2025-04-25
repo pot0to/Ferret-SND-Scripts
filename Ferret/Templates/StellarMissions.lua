@@ -15,7 +15,7 @@ function StellarMissions:new()
     self.medicine_to_drink = nil;
     self.food_to_eat = nil;
     self.job = nil;
-    self.template_version = Version:new(2, 0, 3);
+    self.template_version = Version:new(2, 1, 0);
 end
 
 function StellarMissions:setup()
@@ -84,7 +84,6 @@ function StellarMissions:loop()
         return
     else
         self.logger:debug("Selecting mission to run")
-        -- local mission = mission_list:random()
         local mission = nil
         if self.mission_order == MissionOrder.TopPriority then
             mission = mission_list:first()
@@ -102,27 +101,6 @@ function StellarMissions:loop()
         mission:start()
         self.cosmic_exploration.recipe_notebook_hud:wait_until_ready()
         self:emit(Hooks.PRE_CRAFT)
-
-        -- if self.food_to_eat ~= "" then
-        --     self.food.should_eat = true
-        --     self.food.food = self.food_to_eat
-        -- end
-
-        self.food:eat()
-
-        if self.medicine_to_drink ~= "" then
-            self.medicine.should_medicate = true
-            self.medicine.medicine = self.medicine_to_drink
-            local mission_name = mission.name[self.language]
-
-            for _, missions_we_need_to_medicate_on in pairs(
-                                                          self.missions_to_medicate_on) do
-                if missions_we_need_to_medicate_on == mission_name then
-                    self.logger:debug("Mission needs medicine: " .. mission_name)
-                    self.medicine:medicate()
-                end
-            end
-        end
 
         mission:handle()
         mission:report()

@@ -1,7 +1,8 @@
 CraftingConsumables = Plugin:extend()
 
 function CraftingConsumables:new()
-    CraftingConsumables.super:new("Crafting Consumables", "crafting_consumables")
+    CraftingConsumables.super.new(self, "Crafting Consumables",
+                                  "crafting_consumables")
     self.food = nil
     self.food_threshold = 5
     self.medicine = nil

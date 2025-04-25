@@ -4,7 +4,7 @@ require("Ferret/Addons/Materialize")
 ExtractMateria = Plugin:extend()
 
 function ExtractMateria:new()
-    ExtractMateria.super:new("Extract Materia", "extract_materia")
+    ExtractMateria.super.new(self, "Extract Materia", "extract_materia")
 end
 
 function ExtractMateria:init(ferret)
@@ -12,9 +12,14 @@ function ExtractMateria:init(ferret)
     self.addon = Materialize(ferret)
     self.dialog = MaterializeDialog(ferret)
 
-    ferret:subscribe(Hooks.PRE_LOOP, function()
-        ferret.logger:debug('Checking if materia needs to be extracted')
-        ferret.logger:debug('Extracting Materia')
+    self.ferret:subscribe(Hooks.PRE_LOOP, function()
+        self.ferret.logger:debug('Checking if materia needs to be extracted')
+        self.ferret.logger:debug('Extracting Materia')
+
+        if not CanExtractMateria() then
+            self.ferret.logger:debug('Materia does not need to be extracted')
+            return
+        end
 
         if not self.addon:is_visible() then
             self.addon:open()
