@@ -56,9 +56,9 @@ function MissionList:random()
     local keys = {}
 
     for _, mission in pairs(self.missions) do table.insert(keys, mission.id) end
+    if #keys <= 0 then return nil end
 
     local key = keys[math.random(1, #keys)]
-    FERRET.logger:info("key: " .. key)
     return self.missions[key]
 end
 
