@@ -1,3 +1,11 @@
 {
-  "Lua.diagnostics.globals": ["yield", "IsAddonVisible", "GetNodeText", "CanExtractMateria", "GetCharacterCondition", "NeedsRepair"]
+  "Lua.diagnostics.globals": [
+    "CanExtractMateria",
+    "GetCharacterCondition",
+    "GetNodeText",
+    "IsAddonReady",
+    "IsAddonVisible",
+    "NeedsRepair",
+    "yield"
+  ]
 }

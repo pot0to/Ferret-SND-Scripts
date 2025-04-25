@@ -1,44 +1,51 @@
-Repair = Plugin:extend()
+CraftingConsumables = Plugin:extend()
 
 function CraftingConsumables:new()
-    Repair.super:new("Crafting Consumables", "crafting_consumables")
+    CraftingConsumables.super:new("Crafting Consumables", "crafting_consumables")
+    self.food = nil
+    self.food_threshold = 5
+    self.medicine = nil
+    self.medicine_threshold = 5
 
+    self.wait_timers = {post_food = 5, post_medicine = 5}
+
+    self.should_eat = function() return true end
+    self.should_drink = function() return true end
 end
 
 function CraftingConsumables:init(ferret)
     self.ferret = ferret
 
     ferret:subscribe(Hooks.PRE_CRAFT, function()
-        ferret.logger:debug('Checking if gear needs repairing')
-        if not NeedsRepair(self.threshold) then
-            ferret.logger:debug('Gear does not need repairing')
-            return
+        -- Food
+        if self:should_eat() and self.food ~= nil then
+            local remaining = self:get_remaining_food_time()
+            if remaining <= self.food_threshold then
+                yield('/item ' .. self.food)
+                ferret:wait_until(function()
+                    return self:get_remaining_food_time() > remaining
+                end)
+            end
         end
 
-        ferret.logger:debug('Repairing')
-        while not IsAddonVisible('Repair') do
-            yield('/ac repair')
-            ferret:wait(0.5)
+        if self:should_drink() and self.medicine ~= nil then
+            local remaining = self:get_remaining_medicine_time()
+            if remaining <= self.medicine_threshold then
+                yield('/item ' .. self.medicine)
+                ferret:wait_until(function()
+                    return self:get_remaining_medicine_time() > remaining
+                end)
+            end
         end
 
-        yield('/callback Repair true 0')
-        ferret:wait(0.1)
-
-        if IsAddonVisible('SelectYesno') then
-            yield('/callback SelectYesno true 0')
-            ferret:wait(0.1)
-        end
-
-        ferret:wait_until(function() return not GetCharacterCondition(39) end)
-
-        ferret:wait(1)
-        yield('/callback Repair true -1')
-        ferret.logger:debug("Repaired all gear")
     end)
 end
 
--- function Repair:pre_loop(ferret)
+function CraftingConsumables:get_remaining_food_time()
+    return math.floor(GetStatusTimeRemaining(Status.WellFed) / 60)
+end
+function CraftingConsumables:get_remaining_medicine_time()
+    return math.floor(GetStatusTimeRemaining(Status.Medicated) / 60)
+end
 
--- end
-
-FERRET:add_plugin(Repair())
+FERRET:add_plugin(CraftingConsumables())
