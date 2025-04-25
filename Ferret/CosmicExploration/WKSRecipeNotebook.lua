@@ -28,5 +28,6 @@ end
 
 function WKSRecipeNotebook:synthesize()
     self:wait_until_visible()
+    self.ferret:emit(Hooks.PRE_CRAFT)
     yield("/callback WKSRecipeNotebook true 6")
 end

@@ -1,0 +1,1 @@
+Hooks = {PRE_LOOP = 1, POST_LOOP = 2, PRE_CRAFT = 3}

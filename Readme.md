@@ -2,10 +2,12 @@
 
 To be used with https://github.com/Jaksuhn/SomethingNeedDoing
 
+### Stellar Missions example:
 
-### Stellar Missions example: 
 ```
 local stellar_missions = require("Ferret/Templates/StellarMissions")
+require("Ferret/Plugins/ExtractMateria")
+require("Ferret/Plugins/Repair")
 
 stellar_missions.logger.show_debug = true
 stellar_missions.language = 'en' -- optional 'en', 'de', 'fr', 'jp' default: 'en'
@@ -16,11 +18,10 @@ stellar_missions.mission_list = {
 }
 
 stellar_missions:start()
-
 ```
 
-
 ### Plugins
+
 ```
 local stellar_missions = require("Ferret/Templates/StellarMissions") --example
 require("Ferret/Plugins/ExtractMateria") -- plugins are auto registered

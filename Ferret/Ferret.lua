@@ -15,6 +15,7 @@ require("Ferret/Spearfishing")
 require("Ferret/Timer")
 require("Ferret/World")
 require("Ferret/CosmicExploration/CosmicExploration")
+require("Ferret/Data/Hooks")
 
 Ferret = Object:extend()
 function Ferret:new(name)
@@ -25,6 +26,7 @@ function Ferret:new(name)
     self.run = true
     self.language = 'en'
     self.plugins = {}
+    self.hook_subscriptions = {}
     return o
 end
 
@@ -49,7 +51,8 @@ end
 
 function Ferret:add_plugin(plugin)
     self.logger:debug("Adding plugin: " .. plugin.name)
-    table.insert(self.plugins, plugin)
+    plugin:init(self)
+    self.plugins[plugin.key] = plugin
 end
 
 function Ferret:wait(interval) yield('/wait ' .. interval) end
@@ -92,13 +95,6 @@ function Ferret:loop()
     self:stop()
 end
 
-function Ferret:pre_loop()
-    self.character:extract_materia()
-    self.character:repair()
-    -- self.food:eat()
-    -- self.retainers:check()
-end
-
 function Ferret:start()
     self.timer:start()
     self.logger:info("Ferret version: " .. self.version:to_string())
@@ -110,13 +106,30 @@ function Ferret:start()
 
     self.logger:debug("Starting loop...")
     while (self.run) do
-        for _, plugin in pairs(self.plugins) do plugin:pre_loop(self) end
+        -- for _, plugin in pairs(self.plugins) do plugin:pre_loop(self) end
+        self:emit(Hooks.PRE_LOOP)
 
         self:loop()
 
+        self:emit(Hooks.POST_LOOP)
         for _, plugin in pairs(self.plugins) do plugin:post_loop(self) end
     end
     self.logger:debug("Done")
+end
+
+function Ferret:subscribe(hook, callback)
+    if not self.hook_subscriptions[hook] then
+        self.hook_subscriptions[hook] = {}
+    end
+
+    table.insert(self.hook_subscriptions[hook], callback)
+end
+
+function Ferret:emit(hook)
+    self.logger:debug("Emitting event: " .. hook)
+    if not self.hook_subscriptions[hook] then return end
+
+    for _, callback in pairs(self.hook_subscriptions[hook]) do callback() end
 end
 
 -- Helpers

@@ -1,14 +1,14 @@
 Repair = Plugin:extend()
 
-function Repair:new(threshold)
-    Repair.super:new("Repair", "repair")
-    self.threshold = threshold or 50
+function CraftingConsumables:new()
+    Repair.super:new("Crafting Consumables", "crafting_consumables")
+
 end
 
-function Repair:init(ferret)
+function CraftingConsumables:init(ferret)
     self.ferret = ferret
 
-    ferret:subscribe(Hooks.PRE_LOOP, function()
+    ferret:subscribe(Hooks.PRE_CRAFT, function()
         ferret.logger:debug('Checking if gear needs repairing')
         if not NeedsRepair(self.threshold) then
             ferret.logger:debug('Gear does not need repairing')

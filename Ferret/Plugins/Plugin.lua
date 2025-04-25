@@ -1,7 +1,9 @@
 Plugin = Object:extend()
 
-function Plugin:new(name) self.name = name end
+function Plugin:new(name, key)
+    self.name = name
+    self.key = key
+end
 
-function Plugin:pre_loop(ferret) end
+function Plugin:init(ferret) end
 
-function Plugin:post_loop(ferret) end
