@@ -69,7 +69,6 @@ function WKSMission:get_available_missions()
 
     repeat
         local mission = self:get_mission_name_by_index(index):gsub(" ", "")
-        yield("/echo "..mission)
         if mission ~= "" then
             local found_mission =
                 self.ferret.cosmic_exploration.mission_list:find_by_name(mission)
@@ -81,7 +80,7 @@ function WKSMission:get_available_missions()
             end
             index = index + 1
         end
-    until (mission == "" or mission  == "???")
+    until (mission == "" or mission == "???")
 
     return missions
 end
