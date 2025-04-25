@@ -114,7 +114,7 @@ function StellarMissions:loop()
             self.medicine.medicine = self.medicine_to_drink
             local mission_name = mission.name[self.language]
 
-            for _, missions_we_need_to_medicate_on in pairs(self.missions_to_use_medicine_on) do
+            for _, missions_we_need_to_medicate_on in pairs(self.missions_to_medicate_on ) do
                 if missions_we_need_to_medicate_on == mission_name then
                     self.logger:debug("Mission needs medicine: " .. mission_name)
                     self.medicine:medicate()
