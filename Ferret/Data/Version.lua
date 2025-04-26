@@ -1,15 +1,16 @@
-Version = {}
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Semantic versioning objecty
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
 
+Version = Object:extend()
 function Version:new(major, minor, patch)
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-    o.major = major or 0
-    o.minor = minor or 0
-    o.patch = patch or 0
-    return o
+    self.major = major
+    self.minor = minor
+    self.patch = patch
 end
 
 function Version:to_string()
-    return string.format("v%d.%d.%d", self.major, self.minor, self.patch)
+    return string.format('v%d.%d.%d', self.major, self.minor, self.patch)
 end

@@ -1,12 +1,12 @@
+--------------------------------------------------------------------------------
+--   DESCRIPTION: CosmicExploration Mission Reward object
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
+
 MissionReward = Object:extend()
-
 function MissionReward:new(job, tier, amount)
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-    o.job = job
-    o.tier = tier
-    o.amount = amount
-
-    return o
+    self.job = job
+    self.tier = tier
+    self.amount = amount
 end

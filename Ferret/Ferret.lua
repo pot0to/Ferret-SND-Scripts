@@ -1,3 +1,9 @@
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Main library class
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
+
 Object = require('external/classic')
 require('Ferret/Library')
 
@@ -11,7 +17,7 @@ function Ferret:new(name)
 end
 
 function Ferret:init()
-    self.version = Version:new(0, 3, 1)
+    self.version = Version(0, 3, 1)
 end
 
 function Ferret:add_plugin(plugin)
@@ -88,7 +94,7 @@ function Ferret:start()
     end
 
     Logger:debug('Starting loop...')
-    while (self.run) do
+    while self.run do
         self:emit(Hooks.PRE_LOOP)
         self:loop()
         self:emit(Hooks.POST_LOOP)

@@ -1,5 +1,10 @@
-local Timer = Object:extend()
+--------------------------------------------------------------------------------
+--   DESCRIPTION: A timer, for tracking how much time has elapsed
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
 
+local Timer = Object:extend()
 function Timer:new()
     self.startTime = 0
 end

@@ -2,15 +2,15 @@
   "Lua.diagnostics.globals": [
     "CanExtractMateria",
     "GetCharacterCondition",
-    "GetNodeText",
     "GetNodeListCount",
+    "GetNodeText",
+    "GetStatusTimeRemaining",
+    "GetTargetName",
     "IsAddonReady",
     "IsAddonVisible",
+    "IsLocalPlayerNull",
     "NeedsRepair",
     "PauseYesAlready",
-    "GetTargetName",
-    "IsLocalPlayerNull",
-    "GetStatusTimeRemaining",
     "yield"
   ],
   "diagnostics.disable": ["redundant-parameter"]

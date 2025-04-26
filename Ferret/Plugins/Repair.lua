@@ -1,13 +1,19 @@
-Repair = Plugin:extend()
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Plugin that repairs your gear before a loop
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+-- OPTIONS:
+--- threshold: [integer] Remaining gear durability required before repairing
+--------------------------------------------------------------------------------
 
-function Repair:new(threshold)
-    Repair.super:new('Repair', 'repair')
-    self.threshold = threshold or 50
+Repair = Plugin:extend()
+function Repair:new()
+    Repair.super.new(self, 'Repair', 'repair')
+    self.threshold = 50
 end
 
-function Repair:init(ferret)
-    Logger:debug(':(Repair)')
-    ferret:subscribe(Hooks.PRE_LOOP, function(ferret, context)
+function Repair:init()
+    Ferret:subscribe(Hooks.PRE_LOOP, function(context)
         Logger:debug('Checking if gear needs repairing')
         if not NeedsRepair(self.threshold) then
             Logger:debug('Gear does not need repairing')
@@ -17,29 +23,25 @@ function Repair:init(ferret)
         Logger:debug('Repairing')
         while not IsAddonVisible('Repair') do
             yield('/ac repair')
-            ferret:wait(0.5)
+            Ferret:wait(0.5)
         end
 
         yield('/callback Repair true 0')
-        ferret:wait(0.1)
+        Ferret:wait(0.1)
 
         if IsAddonVisible('SelectYesno') then
             yield('/callback SelectYesno true 0')
-            ferret:wait(0.1)
+            Ferret:wait(0.1)
         end
 
-        ferret:wait_until(function()
+        Ferret:wait_until(function()
             return not GetCharacterCondition(Conditions.Occupied39)
         end)
 
-        ferret:wait(1)
+        Ferret:wait(1)
         yield('/callback Repair true -1')
         Logger:debug('Repaired all gear')
     end)
 end
-
--- function Repair:pre_loop(ferret)
-
--- end
 
 Ferret:add_plugin(Repair())

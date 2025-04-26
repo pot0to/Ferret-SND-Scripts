@@ -1,24 +1,30 @@
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Stellar Crafting Mission automator
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
+
 require('Ferret/Ferret')
 require('Ferret/CosmicExploration/CosmicExploration')
 
 MissionOrder = {
     TopPriority = 1, -- Execute missions in the order they are listed
-    Random = 2 -- Execute missions in random order
+    Random = 2, -- Execute missions in random order
 }
 
 StellarMissions = Ferret:extend()
 function StellarMissions:new()
-    StellarMissions.super:new('Stellar Missions')
+    StellarMissions.super.new(self, 'Stellar Missions')
 
-    self.mission_list = {};
-    self.mission_order = MissionOrder.TopPriority;
-    self.missions_to_medicate_on = {};
-    self.medicine_to_drink = nil;
-    self.food_to_eat = nil;
-    self.job = nil;
-    self.template_version = Version:new(2, 1, 2);
+    self.mission_list = {}
+    self.mission_order = MissionOrder.TopPriority
+    self.missions_to_medicate_on = {}
+    self.medicine_to_drink = nil
+    self.food_to_eat = nil
+    self.job = nil
+    self.template_version = Version(2, 1, 2)
 
-    self.cosmic_exploration = CosmicExploration(self)
+    self.cosmic_exploration = CosmicExploration()
 
     self:init()
 end
@@ -36,14 +42,13 @@ function StellarMissions:setup()
 
     local error = false
     Logger:debug('Found missions:')
-    local actual_missions = MissionList:new()
+    local actual_missions = MissionList()
     for _, mission in pairs(self.mission_list) do
-        local found_mission = self.cosmic_exploration.mission_list:find_by_name(
-            mission)
+        local found_mission = self.cosmic_exploration.mission_list:find_by_name(mission)
 
         if found_mission ~= nil then
             Logger:debug(mission .. ': ' .. found_mission:to_string())
-            actual_missions.missions[found_mission.id] = found_mission
+            table.insert(actual_missions.missions, found_mission)
         else
             Logger:error(mission .. ': Not found')
             error = true
@@ -63,13 +68,12 @@ end
 function StellarMissions:loop()
     Logger:debug('Starting loop')
 
-    self.cosmic_exploration.main_hud:wait_until_ready()
+    WKSHud:wait_until_ready()
 
-    self.cosmic_exploration.mission_hud:open_basic_missions()
+    WKSMission:open_basic_missions()
 
-    local available_missions =
-        self.cosmic_exploration.mission_hud:get_available_missions()
-    local mission_list = available_missions:get_overlap(self.mission_list)
+    local available_missions = WKSMission:get_available_missions()
+    local mission_list = self.mission_list:get_overlap(available_missions)
 
     if self:get_table_length(mission_list.missions) <= 0 then
         local classes = {}
@@ -90,6 +94,7 @@ function StellarMissions:loop()
 
         mission:start()
         mission:abandon()
+        Ferret:wait(1)
         return
     else
         Logger:debug('Selecting mission to run')
@@ -108,7 +113,7 @@ function StellarMissions:loop()
 
         Logger:debug('mission: ' .. mission:to_string())
         mission:start()
-        self.cosmic_exploration.recipe_notebook_hud:wait_until_ready()
+        WKSRecipeNotebook:wait_until_ready()
         self:emit(Hooks.PRE_CRAFT)
 
         mission:handle()

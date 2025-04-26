@@ -1,23 +1,6 @@
-WKSMission = {}
-
-function WKSMission:new(ferret)
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-    self.ferret = ferret
-    return o
-end
-
-function WKSMission:is_ready()
-    return IsAddonReady('WKSMission')
-end
-
-function WKSMission:is_visible()
-    return IsAddonVisible('WKSMission')
-end
-
-function WKSMission:wait_until_ready()
-    self.ferret:wait_for_ready_addon('WKSMission')
+local WKSMission = Addon:extend()
+function WKSMission:new()
+    WKSMission.super.new(self, 'WKSMission')
 end
 
 function WKSMission:start_mission(id)
@@ -27,22 +10,22 @@ function WKSMission:start_mission(id)
         if IsAddonReady('WKSMission') then
             yield('/callback WKSMission true 13 ' .. id)
         end
-        self.ferret:wait(0.1)
+        Ferret:wait(0.1)
     until IsAddonVisible('SelectYesno')
 
     repeat
         if IsAddonReady('SelectYesno') then
             yield('/callback SelectYesno true 0')
         end
-        self.ferret:wait(0.1)
+        Ferret:wait(0.1)
     until not IsAddonReady('WKSMission')
 end
 
 function WKSMission:open()
     Logger:debug('Opening mission ui')
-    self.ferret.cosmic_exploration.main_hud:open_mission_menu()
+    WKSHud:open_mission_menu()
     self:wait_until_ready()
-    self.ferret:wait(1)
+    Ferret:wait(1)
 end
 
 function WKSMission:open_basic_missions()
@@ -70,17 +53,17 @@ end
 function WKSMission:get_available_missions()
     Logger:debug('Getting missions from mission list:')
 
-    local missions = MissionList:new()
+    local missions = MissionList()
     local index = 2 -- Start at 2 because that's the first mission node
 
     repeat
         local mission = self:get_mission_name_by_index(index):gsub(' ', '')
         if mission ~= '' then
-            local found_mission =
-                self.ferret.cosmic_exploration.mission_list:find_by_name(mission)
+            local found_mission = Ferret.cosmic_exploration.mission_list:find_by_name(mission)
             if found_mission ~= nil then
                 -- Logger:debug(mission .. ": " .. found_mission:to_string())
-                missions.missions[found_mission.id] = found_mission
+                -- missions.missions[found_mission.id] = found_mission
+                table.insert(missions.missions, found_mission)
             else
                 Logger:error(mission .. ': Not found')
             end
@@ -90,3 +73,5 @@ function WKSMission:get_available_missions()
 
     return missions
 end
+
+return WKSMission()

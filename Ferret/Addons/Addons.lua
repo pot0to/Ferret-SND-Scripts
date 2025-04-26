@@ -1,5 +1,11 @@
-require("Ferret/Addons/Addon")
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Addons list
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
 
-Materialize = require("Ferret/Addons/Materialize")
-MaterializeDialog = require("Ferret/Addons/MaterializeDialog")
-ToDoList = require("Ferret/Addons/ToDoList")
+require('Ferret/Addons/Addon')
+
+Materialize = require('Ferret/Addons/Materialize')
+MaterializeDialog = require('Ferret/Addons/MaterializeDialog')
+ToDoList = require('Ferret/Addons/ToDoList')

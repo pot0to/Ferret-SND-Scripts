@@ -1,29 +1,26 @@
-require('Ferret/CosmicExploration/Data/MissionReward')
-require('Ferret/Data/Name')
+--------------------------------------------------------------------------------
+--   DESCRIPTION: CosmicExploration Mission
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
 
 Mission = Object:extend()
-
 function Mission:new(id, name, job, class)
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-    o.id = id
-    o.name = name
-    o.job = job
-    o.class = class
+    self.id = id
+    self.name = name
+    self.job = job
+    self.class = class
 
-    o.time_limit = 0
-    o.silver_threshold = 0
-    o.gold_threshold = 0
-    o.has_secondary_job = false
-    o.secondary_job = nil
-    o.cosmocredit = 0
-    o.lunarcredit = 0
-    o.exp_reward = {}
-    o.has_multiple_recipes = false
-    o.multi_craft_config = {}
-
-    return o
+    self.time_limit = 0
+    self.silver_threshold = 0
+    self.gold_threshold = 0
+    self.has_secondary_job = false
+    self.secondary_job = nil
+    self.cosmocredit = 0
+    self.lunarcredit = 0
+    self.exp_reward = {}
+    self.has_multiple_recipes = false
+    self.multi_craft_config = {}
 end
 
 function Mission:with_de_name(name)
@@ -92,13 +89,12 @@ function Mission:with_multi_craft_config(config)
 end
 
 function Mission:start()
-    Ferret.cosmic_exploration.mission_hud:wait_until_ready()
-    Ferret.cosmic_exploration.mission_hud:start_mission(self.id)
+    WKSMission:wait_until_ready()
+    WKSMission:start_mission(self.id)
 end
 
 function Mission:is_complete()
-    local current_score, gold_star_requirement =
-        ToDoList:get_stellar_mission_scores()
+    local current_score, gold_star_requirement = ToDoList:get_stellar_mission_scores()
     if current_score and gold_star_requirement then
         return current_score >= gold_star_requirement
     end
@@ -109,25 +105,26 @@ end
 function Mission:wait_for_crafting_ui_or_mission_complete()
     Logger:debug('Waiting for Crafting ui or mission complete')
     Ferret:wait_until(function()
-        return Ferret.cosmic_exploration.recipe_notebook_hud:is_ready() or
-                   self:is_complete()
+        return WKSRecipeNotebook:is_ready() or self:is_complete()
     end)
     Ferret:wait(1)
     Logger:debug('Finished waiting for Crafting ui or Mission complete')
 end
 
 function Mission:handle()
-    Logger:debug('Starting mission: ' .. self.name:get(Ferret.language))
+    Logger:debug('Starting mission: ' .. self.name:get())
+
+    WKSHud:open_mission_menu()
+
     if not self.has_multiple_recipes then
         Logger:debug('Only 1 recipe')
         Ferret:repeat_until(function()
-            if Ferret.cosmic_exploration.recipe_notebook_hud:is_ready() then
-                Ferret.cosmic_exploration.recipe_notebook_hud:synthesize()
+            if WKSRecipeNotebook:is_ready() then
+                WKSRecipeNotebook:synthesize()
             end
         end, function()
             return self:is_complete()
         end)
-
     else
         Logger:debug('Multiple recipe')
         repeat
@@ -135,24 +132,21 @@ function Mission:handle()
             for index, count in pairs(self.multi_craft_config) do
                 self:wait_for_crafting_ui_or_mission_complete()
                 if not self:is_complete() then
-                    Ferret.cosmic_exploration.recipe_notebook_hud:wait_until_ready()
+                    WKSRecipeNotebook:wait_until_ready()
                     Ferret:wait(0.5)
                     Logger:debug('Setting craft index to: ' .. index)
-                    Ferret.cosmic_exploration.recipe_notebook_hud:set_index(
-                        index)
+                    WKSRecipeNotebook:set_index(index)
                     for i = 1, count do
                         self:wait_for_crafting_ui_or_mission_complete()
                         if not self:is_complete() then
-                            Ferret.cosmic_exploration.recipe_notebook_hud:wait_until_ready()
+                            WKSRecipeNotebook:wait_until_ready()
                             -- Ferret:wait(1)
-                            Logger:debug(
-                                'Crafting: (' .. i .. '/' .. count .. ')')
-                            Ferret.cosmic_exploration.recipe_notebook_hud:set_hq()
+                            Logger:debug('Crafting: (' .. i .. '/' .. count .. ')')
+                            WKSRecipeNotebook:set_hq()
                             Ferret:wait(0.5)
-                            Ferret.cosmic_exploration.recipe_notebook_hud:synthesize()
+                            WKSRecipeNotebook:synthesize()
                             Ferret:wait(0.5)
                         end
-
                     end
                 end
             end
@@ -163,17 +157,21 @@ function Mission:handle()
 end
 
 function Mission:report()
-    Ferret.cosmic_exploration.main_hud:open_mission_menu()
-    Ferret.cosmic_exploration.mission_information_hud:report()
+    WKSHud:open_mission_menu()
+    WKSMissionInfomation:report()
 end
 
 function Mission:abandon()
-    Ferret.cosmic_exploration.main_hud:open_mission_menu()
-    Ferret.cosmic_exploration.mission_information_hud:abandon()
+    WKSHud:open_mission_menu()
+    WKSMissionInfomation:abandon()
 end
 
 function Mission:to_string()
     return string.format(
         'Mission [\n    ID: %s,\n    Name: %s,\n    Job: %s,\n    Class: %s\n]',
-        self.id, self.name:get(Ferret.language), self.job, self.class);
+        self.id,
+        self.name:get(),
+        self.job,
+        self.class
+    )
 end

@@ -1,8 +1,21 @@
-CraftingConsumables = Plugin:extend()
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Plugin that consumes food and medicine before crafting
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+-- OPTIONS:
+--- food: [string] The in game name of the food you'd like to consume
+--- food_threshold: [integer] The number of minutes remaining on the well fed buff before
+---                 you consume more
+--- medicine: [string] The in game name of the medicine you'd like to consume
+--- medicine_threshold: [integer] The number of minutes remaining on the medicated buff
+---                     before you consume more
+--- should_eat: [function(context) -> bool] Add custom logic to food
+--- should_drink: [function(context) -> bool] Add custum logic to medicine
+--------------------------------------------------------------------------------
 
+CraftingConsumables = Plugin:extend()
 function CraftingConsumables:new()
-    CraftingConsumables.super.new(self, 'Crafting Consumables',
-                                  'crafting_consumables')
+    CraftingConsumables.super.new(self, 'Crafting Consumables', 'crafting_consumables')
     self.food = nil
     self.food_threshold = 5
     self.medicine = nil
@@ -18,7 +31,6 @@ function CraftingConsumables:new()
 end
 
 function CraftingConsumables:init()
-    Logger:debug('Init CraftingConsumables')
     Ferret:subscribe(Hooks.PRE_CRAFT, function(context)
         -- Food
         if self:should_eat() and self.food ~= nil then
@@ -28,6 +40,7 @@ function CraftingConsumables:init()
                 Ferret:wait_until(function()
                     return self:get_remaining_food_time() > remaining
                 end)
+                Ferret:wait(5)
             end
         end
 
@@ -40,7 +53,6 @@ function CraftingConsumables:init()
                 end)
             end
         end
-
     end)
 end
 

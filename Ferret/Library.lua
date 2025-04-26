@@ -1,8 +1,8 @@
 Object = require('external/classic')
 
 -- Data enums and objects
+require('Ferret/Data/Translatable')
 require('Ferret/Data/Conditions')
-require('Ferret/Data/GatheringNodes')
 require('Ferret/Data/Hooks')
 require('Ferret/Data/Jobs')
 require('Ferret/Data/Name')
@@ -20,3 +20,6 @@ require('Ferret/Addons/Addons')
 Character = require('Ferret/Character')
 Logger = require('Ferret/Logger')
 Timer = require('Ferret/Timer')
+
+-- Modules
+require('Ferret/CosmicExploration/Library')

@@ -1,15 +1,15 @@
-require('Ferret/Addons/MaterializeDialog')
-require('Ferret/Addons/Materialize')
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Plugin that extracts materia before a loop
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
 
 ExtractMateria = Plugin:extend()
-
 function ExtractMateria:new()
     ExtractMateria.super.new(self, 'Extract Materia', 'extract_materia')
 end
 
 function ExtractMateria:init()
-    Logger:debug(':(ExtractMateria)')
-
     Ferret:subscribe(Hooks.PRE_LOOP, function(Ferret, context)
         Logger:debug('Checking if materia needs to be extracted')
         Logger:debug('Extracting Materia')

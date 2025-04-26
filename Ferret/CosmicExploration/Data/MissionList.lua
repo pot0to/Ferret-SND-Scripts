@@ -1,23 +1,19 @@
-require('Ferret/CosmicExploration/Data/Mission')
-require('Ferret/Data/Name')
+--------------------------------------------------------------------------------
+--   DESCRIPTION: CosmicExploration Mission List
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
 
 MissionList = Object:extend()
-
 function MissionList:new()
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-
-    o.missions = {}
-
-    return o
+    self.missions = {}
 end
 
 function MissionList:filter_by_job(job)
-    local filtered = MissionList:new()
+    local filtered = MissionList()
     for _, mission in ipairs(self.missions) do
         if mission.job == job then
-            filtered.missions[mission.id] = mission;
+            table.insert(filtered.missions, mission)
         end
     end
 
@@ -25,23 +21,22 @@ function MissionList:filter_by_job(job)
 end
 
 function MissionList:filter_by_class(class)
-    local filtered = MissionList:new()
+    local filtered = MissionList()
     for _, mission in pairs(self.missions) do
         if mission.class == class then
-            filtered.missions[mission.id] = mission;
+            table.insert(filtered.missions, mission)
         end
     end
 
     return filtered
 end
 
-function MissionList:find_by_name(name, lang)
+function MissionList:find_by_name(name)
     for _, mission in pairs(self.missions) do
-        local start_index = string.find(mission.name:get(Ferret.language), name,
-                                        0, true)
+        local start_index = string.find(mission.name:get(), name, 0, true)
 
         if start_index ~= nil and start_index <= 4 then
-            return mission;
+            return mission
         end
     end
 
@@ -60,7 +55,7 @@ function MissionList:random()
     local keys = {}
 
     for _, mission in pairs(self.missions) do
-        table.insert(keys, mission.id)
+        table.insert(keys, _)
     end
     if #keys <= 0 then
         return nil
@@ -71,15 +66,21 @@ function MissionList:random()
 end
 
 function MissionList:has_id(id)
-    return self.missions[id] ~= nil
+    for _, mission in pairs(self.missions) do
+        if mission.id == id then
+            return true
+        end
+    end
+
+    return false
 end
 
 function MissionList:get_overlap(other)
-    local overlap = MissionList:new()
+    local overlap = MissionList()
 
     for _, mission in pairs(self.missions) do
         if other:has_id(mission.id) then
-            overlap.missions[mission.id] = mission
+            table.insert(overlap.missions, mission)
         end
     end
 

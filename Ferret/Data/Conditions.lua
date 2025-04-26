@@ -1,3 +1,9 @@
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Character conditions
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
+
 Conditions = {
     Normal = 1,
     Mounted = 4,
@@ -7,5 +13,5 @@ Conditions = {
     PreparingToCraft = 41,
     Gathering42 = 42,
     Mounting = 64,
-    Flying = 77
+    Flying = 77,
 }

@@ -1,10 +1,15 @@
-local Character = Object:extend()
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Character object
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
 
+local Character = Object:extend()
 function Character:wait_until_done_crafting()
     repeat
         Ferret:wait(0.1)
-    until not GetCharacterCondition(Conditions.Crafting40) and
-        not GetCharacterCondition(Conditions.PreparingToCraft)
+    until not GetCharacterCondition(Conditions.Crafting40)
+        and not GetCharacterCondition(Conditions.PreparingToCraft)
 end
 
 return Character()

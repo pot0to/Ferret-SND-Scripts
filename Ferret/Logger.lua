@@ -1,5 +1,10 @@
-local Logger = Object:extend()
+--------------------------------------------------------------------------------
+--   DESCRIPTION: A text logger
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
 
+local Logger = Object:extend()
 function Logger:new()
     self.log_to_file = false
     self.show_debug = false

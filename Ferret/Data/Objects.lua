@@ -1,3 +1,9 @@
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Object type to ids
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
+
 Objects = {
     None = 0,
     Player = 1,
@@ -14,5 +20,5 @@ Objects = {
     Housing = 12,
     Curscene = 13,
     CardStand = 14,
-    Ornament = 15
+    Ornament = 15,
 }

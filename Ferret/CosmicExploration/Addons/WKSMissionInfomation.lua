@@ -1,22 +1,6 @@
-WKSMissionInfomation = {}
-
-function WKSMissionInfomation:new(ferret)
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
-
-function WKSMissionInfomation:is_ready()
-    return IsAddonReady('WKSMissionInfomation')
-end
-
-function WKSMissionInfomation:is_visible()
-    return IsAddonVisible('WKSMissionInfomation')
-end
-
-function WKSMissionInfomation:wait_until_ready()
-    Ferret:wait_for_ready_addon('WKSMissionInfomation')
+local WKSMissionInfomation = Addon:extend()
+function WKSMissionInfomation:new()
+    WKSMissionInfomation.super.new(self, 'WKSMissionInfomation')
 end
 
 function WKSMissionInfomation:report()
@@ -42,3 +26,5 @@ function WKSMissionInfomation:abandon()
         Ferret:wait(0.1)
     until not WKSMissionInfomation:is_visible()
 end
+
+return WKSMissionInfomation()

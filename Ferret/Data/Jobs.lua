@@ -1,3 +1,9 @@
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Job names to ids
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
+
 Jobs = {
     Unknown = -1,
     Carpenter = 8,
@@ -10,5 +16,5 @@ Jobs = {
     Culinarian = 15,
     Miner = 16,
     Botanist = 17,
-    Fisher = 18
+    Fisher = 18,
 }
