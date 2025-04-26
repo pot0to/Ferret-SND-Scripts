@@ -19,4 +19,12 @@ function WKSHud:open_cosmic_research()
     yield('/callback WKSHud true 15')
 end
 
+function WKSHud:close_cosmic_research()
+    if not WKSToolCustomize:is_visible() then
+        return
+    end
+
+    yield('/callback WKSHud true 15')
+end
+
 return WKSHud()

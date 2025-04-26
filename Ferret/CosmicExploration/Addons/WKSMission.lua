@@ -110,6 +110,9 @@ function WKSMission:get_best_available_mission()
         return best_index
     end
 
+    WKSHud:close_cosmic_research()
+    Ferret:wait(1)
+
     WKSHud:open_cosmic_research()
     WKSHud:open_mission_menu()
     Ferret:wait(1)
