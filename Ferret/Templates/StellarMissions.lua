@@ -73,10 +73,8 @@ function StellarMissions:loop()
             end
         end
         self.logger:debug("Selecting mission to abandon")
-        local class = self:table_random(classes)
-        local class_missions = available_missions:filter_by_class(class)
-        local mission = class_missions:random()
-        if mission == nil then mission = available_missions:random() end
+
+        local mission = available_missions:first()
 
         self.logger:debug("mission: " .. mission:to_string())
 
