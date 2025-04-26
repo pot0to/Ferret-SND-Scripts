@@ -4,42 +4,41 @@ function WKSMissionInfomation:new(ferret)
     local o = {}
     setmetatable(o, self)
     self.__index = self
-    self.ferret = ferret
     return o
 end
 
 function WKSMissionInfomation:is_ready()
-    return IsAddonReady("WKSMissionInfomation")
+    return IsAddonReady('WKSMissionInfomation')
 end
 
 function WKSMissionInfomation:is_visible()
-    return IsAddonVisible("WKSMissionInfomation")
+    return IsAddonVisible('WKSMissionInfomation')
 end
 
 function WKSMissionInfomation:wait_until_ready()
-    self.ferret:wait_for_ready_addon("WKSMissionInfomation")
+    Ferret:wait_for_ready_addon('WKSMissionInfomation')
 end
 
 function WKSMissionInfomation:report()
     self:wait_until_ready()
-    self.ferret.character:wait_until_done_crafting()
-    yield("/callback WKSMissionInfomation true 11")
+    Character:wait_until_done_crafting()
+    yield('/callback WKSMissionInfomation true 11')
     repeat
-        self.ferret:wait(0.1)
+        Ferret:wait(0.1)
     until not WKSMissionInfomation:is_visible()
 end
 
 function WKSMissionInfomation:abandon()
     repeat
-        if IsAddonReady("WKSMissionInfomation") then
-            yield("/callback WKSMissionInfomation true 12")
+        if IsAddonReady('WKSMissionInfomation') then
+            yield('/callback WKSMissionInfomation true 12')
         end
-        self.ferret:wait(0.1)
-    until IsAddonVisible("SelectYesno")
+        Ferret:wait(0.1)
+    until IsAddonVisible('SelectYesno')
     repeat
-        if IsAddonReady("SelectYesno") then
-            yield("/callback SelectYesno true 0")
+        if IsAddonReady('SelectYesno') then
+            yield('/callback SelectYesno true 0')
         end
-        self.ferret:wait(0.1)
+        Ferret:wait(0.1)
     until not WKSMissionInfomation:is_visible()
 end

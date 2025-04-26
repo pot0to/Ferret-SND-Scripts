@@ -1,26 +1,22 @@
-ToDoList = Object:extend()
+--------------------------------------------------------------------------------
+--   DESCRIPTION: Addon for Quest list (Not Journal)
+--        AUTHOR: Faye (OhKannaDuh)
+-- CONSTRIBUTORS:
+--------------------------------------------------------------------------------
+
+local ToDoList = Addon:extend()
 function ToDoList:new(ferret)
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-    self.ferret = ferret
-    return o
+    ToDoList.super.new(self, "_ToDoList")
 end
 
-function ToDoList:is_ready() return IsAddonReady("_ToDoList") end
-
-function ToDoList:wait_until_ready()
-    self.ferret:wait_for_ready_addon("_ToDoList")
-end
-
-function ToDoList:get_count() return GetNodeListCount("_ToDoList") end
+function ToDoList:get_count() return GetNodeListCount(self.key) end
 
 function ToDoList:get_stellar_mission_scores()
     local pattern = "Current Score: ([%d,]+)%. Gold Star Requirement: ([%d,]+)"
     local function parse_number(str) return tonumber((str:gsub(",", ""))) end
 
     for i = 1, self:get_count() do
-        local node_text = GetNodeText("_ToDoList", i, 1)
+        local node_text = GetNodeText(self.key, i, 1)
         local current_score, gold_star_requirement =
             string.match(node_text, pattern)
 
@@ -32,3 +28,5 @@ function ToDoList:get_stellar_mission_scores()
 
     return nil, nil
 end
+
+return ToDoList()

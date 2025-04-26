@@ -3,10 +3,15 @@
     "CanExtractMateria",
     "GetCharacterCondition",
     "GetNodeText",
+    "GetNodeListCount",
     "IsAddonReady",
     "IsAddonVisible",
     "NeedsRepair",
     "PauseYesAlready",
+    "GetTargetName",
+    "IsLocalPlayerNull",
+    "GetStatusTimeRemaining",
     "yield"
-  ]
+  ],
+  "diagnostics.disable": ["redundant-parameter"]
 }

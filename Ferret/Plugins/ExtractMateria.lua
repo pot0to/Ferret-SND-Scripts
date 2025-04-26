@@ -1,50 +1,49 @@
-require("Ferret/Addons/MaterializeDialog")
-require("Ferret/Addons/Materialize")
+require('Ferret/Addons/MaterializeDialog')
+require('Ferret/Addons/Materialize')
 
 ExtractMateria = Plugin:extend()
 
 function ExtractMateria:new()
-    ExtractMateria.super.new(self, "Extract Materia", "extract_materia")
+    ExtractMateria.super.new(self, 'Extract Materia', 'extract_materia')
 end
 
-function ExtractMateria:init(ferret)
-    self.ferret = ferret
-    self.addon = Materialize(ferret)
-    self.dialog = MaterializeDialog(ferret)
+function ExtractMateria:init()
+    Logger:debug(':(ExtractMateria)')
 
-    self.ferret:subscribe(Hooks.PRE_LOOP, function()
-        self.ferret.logger:debug('Checking if materia needs to be extracted')
-        self.ferret.logger:debug('Extracting Materia')
+    Ferret:subscribe(Hooks.PRE_LOOP, function(Ferret, context)
+        Logger:debug('Checking if materia needs to be extracted')
+        Logger:debug('Extracting Materia')
 
         if not CanExtractMateria() then
-            self.ferret.logger:debug('Materia does not need to be extracted')
+            Logger:debug('Materia does not need to be extracted')
             return
         end
 
-        if not self.addon:is_visible() then
-            self.addon:open()
-            self.addon:wait_until_ready()
+        if not Materialize:is_visible() then
+            Materialize:open()
+            Materialize:wait_until_ready()
         end
 
         while CanExtractMateria(100) do
-            if not self.dialog:is_visible() then
-                self.addon:click_first_slot()
-                self.dialog:wait_until_visible()
+            if MaterializeDialog:is_visible() then
+                Materialize:click_first_slot()
+                MaterializeDialog:wait_until_visible()
             end
 
-            self.ferret:repeat_until(function() self.dialog:yes() end,
-                                     function()
-                return not self.dialog:is_visible()
+            Ferret:repeat_until(function()
+                MaterializeDialog:yes()
+            end, function()
+                return not MaterializeDialog:is_visible()
             end)
 
-            ferret:wait_until(function()
+            Ferret:wait_until(function()
                 return not GetCharacterCondition(Conditions.Occupied39)
             end)
         end
 
-        self.addon:close()
-        ferret.logger:debug("Extracted all materia")
+        Materialize:close()
+        Logger:debug('Extracted all materia')
     end)
 end
 
-FERRET:add_plugin(ExtractMateria())
+Ferret:add_plugin(ExtractMateria())

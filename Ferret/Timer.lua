@@ -1,14 +1,7 @@
-Timer = {
-    ferret = nil,
-    startTime = 0
-}
+local Timer = Object:extend()
 
-function Timer:new(ferret)
-    o = {}
-    setmetatable(o, self)
-    self.__index = self
-    self.ferret = ferret
-    return o
+function Timer:new()
+    self.startTime = 0
 end
 
 function Timer:start()
@@ -18,3 +11,5 @@ end
 function Timer:seconds()
     return os.difftime(os.time(), self.startTime)
 end
+
+return Timer()

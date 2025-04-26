@@ -5,5 +5,7 @@ function Plugin:new(name, key)
     self.key = key
 end
 
-function Plugin:init(ferret) end
+function Plugin:init(ferret)
+    Logger:debug(':()')
+end
 

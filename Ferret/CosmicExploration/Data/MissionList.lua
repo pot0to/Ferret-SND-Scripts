@@ -1,5 +1,5 @@
-require("Ferret/CosmicExploration/Data/Mission")
-require("Ferret/Data/Name")
+require('Ferret/CosmicExploration/Data/Mission')
+require('Ferret/Data/Name')
 
 MissionList = Object:extend()
 
@@ -37,17 +37,21 @@ end
 
 function MissionList:find_by_name(name, lang)
     for _, mission in pairs(self.missions) do
-        local start_index = string.find(mission.name:get(FERRET.language), name,
+        local start_index = string.find(mission.name:get(Ferret.language), name,
                                         0, true)
 
-        if start_index ~= nil and start_index <= 4 then return mission; end
+        if start_index ~= nil and start_index <= 4 then
+            return mission;
+        end
     end
 
     return nil
 end
 
 function MissionList:first()
-    for _, mission in pairs(self.missions) do return mission end
+    for _, mission in pairs(self.missions) do
+        return mission
+    end
 
     return nil
 end
@@ -55,14 +59,20 @@ end
 function MissionList:random()
     local keys = {}
 
-    for _, mission in pairs(self.missions) do table.insert(keys, mission.id) end
-    if #keys <= 0 then return nil end
+    for _, mission in pairs(self.missions) do
+        table.insert(keys, mission.id)
+    end
+    if #keys <= 0 then
+        return nil
+    end
 
     local key = keys[math.random(1, #keys)]
     return self.missions[key]
 end
 
-function MissionList:has_id(id) return self.missions[id] ~= nil end
+function MissionList:has_id(id)
+    return self.missions[id] ~= nil
+end
 
 function MissionList:get_overlap(other)
     local overlap = MissionList:new()
