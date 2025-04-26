@@ -17,7 +17,7 @@ function Ferret:new(name)
 end
 
 function Ferret:init()
-    self.version = Version(0, 4, 1)
+    self.version = Version(0, 4, 2)
 end
 
 function Ferret:add_plugin(plugin)
