@@ -18,7 +18,7 @@ stellar_missions.plugins.crafting_consumables.food = "Rroneek Steak <HQ>" -- Add
 stellar_missions.plugins.crafting_consumables.medicine = "Commanding Craftsman's Draught <HQ>" -- Add if you want to use medicine
 
 -- General config
-stellar_missions.logger.show_debug = true
+Logger.show_debug = true
 stellar_missions.language = 'en' -- optional 'en', 'de', 'fr', 'jp' default: 'en'
 
 stellar_missions.job = Jobs.Carpenter
