@@ -1,4 +1,4 @@
-require("Ferret/Ferret")
+require('Ferret/Ferret')
 
 MissionOrder = {
     TopPriority = 1, -- Execute missions in the order they are listed
@@ -7,7 +7,7 @@ MissionOrder = {
 
 StellarMissions = Ferret:extend()
 function StellarMissions:new()
-    StellarMissions.super:new("Stellar Missions Template")
+    StellarMissions.super:new('Stellar Missions Template')
 
     self.mission_list = {};
     self.mission_order = MissionOrder.TopPriority;
@@ -19,35 +19,37 @@ function StellarMissions:new()
 end
 
 function StellarMissions:setup()
-    self.logger:info("Stellar missions " .. self.template_version:to_string())
+    self.logger:info('Stellar missions ' .. self.template_version:to_string())
 
     if self.job == nil then
         self.logger:error('Job not set')
         self.logger:info(
-            "Please set `stellar_missions.job = Jobs.Carpenter` etc.")
+            'Please set `stellar_missions.job = Jobs.Carpenter` etc.')
         return false
     end
 
     self.cosmic_exploration:set_job(self.job)
 
     local error = false
-    self.logger:debug("Found missions:")
+    self.logger:debug('Found missions:')
     local actual_missions = MissionList:new()
     for _, mission in pairs(self.mission_list) do
         local found_mission = self.cosmic_exploration.mission_list:find_by_name(
-                                  mission)
+            mission)
 
         if found_mission ~= nil then
-            self.logger:debug(mission .. ": " .. found_mission:to_string())
+            self.logger:debug(mission .. ': ' .. found_mission:to_string())
             actual_missions.missions[found_mission.id] = found_mission
         else
-            self.logger:error(mission .. ": Not found")
+            self.logger:error(mission .. ': Not found')
             error = true
         end
     end
 
     self.mission_list = actual_missions
-    if error then return false end
+    if error then
+        return false
+    end
 
     PauseYesAlready()
 
@@ -72,19 +74,21 @@ function StellarMissions:loop()
                 table.insert(classes, mission.class)
             end
         end
-        self.logger:debug("Selecting mission to abandon")
+        self.logger:debug('Selecting mission to abandon')
         local class = self:table_random(classes)
         local class_missions = available_missions:filter_by_class(class)
         local mission = class_missions:random()
-        if mission == nil then mission = available_missions:random() end
+        if mission == nil then
+            mission = available_missions:random()
+        end
 
-        self.logger:debug("mission: " .. mission:to_string())
+        self.logger:debug('mission: ' .. mission:to_string())
 
         mission:start()
         mission:abandon()
         return
     else
-        self.logger:debug("Selecting mission to run")
+        self.logger:debug('Selecting mission to run')
         local mission = nil
         if self.mission_order == MissionOrder.TopPriority then
             mission = mission_list:first()
@@ -93,18 +97,23 @@ function StellarMissions:loop()
         end
 
         if mission == nil then
-            self.logger:error("Error getting a mission.")
+            self.logger:error('Error getting a mission.')
             self:stop()
             return
         end
 
-        self.logger:debug("mission: " .. mission:to_string())
+        self.logger:debug('mission: ' .. mission:to_string())
         mission:start()
         self.cosmic_exploration.recipe_notebook_hud:wait_until_ready()
         self:emit(Hooks.PRE_CRAFT)
 
         mission:handle()
-        mission:report()
+
+        self:repeat_until(function()
+            mission:report()
+        end, function()
+            return not mission:is_complete()
+        end)
     end
 end
 
