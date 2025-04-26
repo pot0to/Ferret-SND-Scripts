@@ -19,16 +19,12 @@ function ToDoList:get_stellar_mission_scores()
         :with_fr('Évaluation : ([%d%s]+) / Rang or : ([%d%s]+)')
         :with_jp('現在の評価値: ([%d,]+) / ゴールドグレード条件: ([%d,]+)')
 
-    local function parse_number(str)
-        return tonumber((str:gsub(',', ''):gsub('%.', ''):gsub(' ', '')))
-    end
-
     for i = 1, self:get_count() do
         local node_text = GetNodeText(self.key, i, 1)
         local current_score, gold_star_requirement = string.match(node_text, pattern:get())
 
         if current_score and gold_star_requirement then
-            return parse_number(current_score), parse_number(gold_star_requirement)
+            return Ferret:parse_number(current_score), Ferret:parse_number(gold_star_requirement)
         end
     end
 

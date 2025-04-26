@@ -158,3 +158,22 @@ function Ferret:table_first(subject)
 
     return nil
 end
+
+function Ferret:table_dump(subject)
+    if type(subject) == 'table' then
+        local s = '{ '
+        for k, v in pairs(subject) do
+            if type(k) ~= 'number' then
+                k = '"' .. k .. '"'
+            end
+            s = s .. '[' .. k .. '] = ' .. self:table_dump(v) .. ','
+        end
+        return s .. '} '
+    end
+
+    return tostring(subject)
+end
+
+function Ferret:parse_number(str)
+    return tonumber((str:gsub(',', ''):gsub('%.', ''):gsub(' ', '')))
+end

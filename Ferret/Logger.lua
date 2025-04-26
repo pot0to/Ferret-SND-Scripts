@@ -10,6 +10,18 @@ function Logger:new()
     self.show_debug = false
 end
 
+function Logger:type(subject)
+    if not self.show_debug then
+        return
+    end
+
+    yield('/e [' .. Ferret.name .. '][Type]: ' .. type(subject))
+end
+
+function Logger:table(subject)
+    yield('/e [' .. Ferret.name .. '][Table]: ' .. Ferret:table_dump(subject))
+end
+
 function Logger:info(contents)
     yield('/e [' .. Ferret.name .. '][Info]: ' .. contents)
 end
