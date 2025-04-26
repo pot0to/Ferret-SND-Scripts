@@ -74,7 +74,7 @@ function StellarMissions:loop()
         end
         self.logger:debug("Selecting mission to abandon")
 
-        local mission = available_missions:first()
+        local mission = available_missions:random()
 
         self.logger:debug("mission: " .. mission:to_string())
 
