@@ -15,7 +15,7 @@ function StellarMissions:new()
     self.medicine_to_drink = nil;
     self.food_to_eat = nil;
     self.job = nil;
-    self.template_version = Version:new(2, 1, 0);
+    self.template_version = Version:new(2, 1, 1);
 end
 
 function StellarMissions:setup()

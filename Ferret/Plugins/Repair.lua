@@ -29,7 +29,7 @@ function Repair:init(ferret)
             ferret:wait(0.1)
         end
 
-        ferret:wait_until(function() return not GetCharacterCondition(39) end)
+        ferret:wait_until(function() return not GetCharacterCondition(Conditions.Occupied39) end)
 
         ferret:wait(1)
         yield('/callback Repair true -1')

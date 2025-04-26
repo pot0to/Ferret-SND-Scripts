@@ -22,6 +22,7 @@ end
 
 function WKSMissionInfomation:report()
     self:wait_until_ready()
+    self.ferret.character:wait_until_done_crafting()
     yield("/callback WKSMissionInfomation true 11")
     repeat
         self.ferret:wait(0.1)
