@@ -200,3 +200,9 @@ function Character:aetherial_reduction()
         yield("/callback PurifyItemSelector true -1")
     end
 end
+
+function Character:wait_until_done_crafting()
+    repeat
+        self.ferret:wait(0.1)
+    until not GetCharacterCondition(Conditions.Crafting40) and not GetCharacterCondition(Conditions.PreparingToCraft)
+end
