@@ -38,7 +38,7 @@ function ExtractMateria:init(ferret)
             end)
 
             ferret:wait_until(function()
-                return not GetCharacterCondition(39)
+                return not GetCharacterCondition(Conditions.Occupied39)
             end)
         end
 

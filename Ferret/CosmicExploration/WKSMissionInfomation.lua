@@ -20,8 +20,15 @@ function WKSMissionInfomation:wait_until_ready()
     self.ferret:wait_for_ready_addon("WKSMissionInfomation")
 end
 
+function WKSMissionInfomation:wait_until_done_crafting()
+    repeat
+        self.ferret:wait(0.1)
+    until not GetCharacterCondition(Conditions.Crafting40) and not GetCharacterCondition(Conditions.PreparingToCraft)
+end
+
 function WKSMissionInfomation:report()
     self:wait_until_ready()
+    self:wait_until_done_crafting()
     yield("/callback WKSMissionInfomation true 11")
     repeat
         self.ferret:wait(0.1)
