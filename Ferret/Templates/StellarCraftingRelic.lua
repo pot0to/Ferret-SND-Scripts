@@ -63,6 +63,53 @@ function StellarCraftingRelic:loop()
     WKSMission:open_basic_missions()
     Ferret:wait(self.wait_timers.post_open_mission_list)
 
+    WKSHud:close_cosmic_research()
+    WKSHud:open_cosmic_research()
+    WKSToolCustomize:wait_until_ready()
+    Ferret:wait(1)
+
+    local is_ready_to_upgrade = true
+    local progress = {
+        WKSToolCustomize:get_exp_1(),
+        WKSToolCustomize:get_exp_2(),
+        WKSToolCustomize:get_exp_3(),
+        WKSToolCustomize:get_exp_4(),
+    }
+
+    for i, exp in ipairs(progress) do
+        if Ferret:get_table_length(exp) > 0 then
+            if exp.current < exp.required then
+                is_ready_to_upgrade = false
+            end
+        end
+    end
+
+    if is_ready_to_upgrade then
+        Ferret:wait(5)
+        yield('/target Researchingway')
+        yield('/interact')
+        Ferret:wait(1)
+        Ferret:repeat_until(function()
+            yield('/click Talk Click')
+        end, function()
+            return not IsAddonVisible('Talk')
+        end)
+        Ferret:wait(1)
+        yield('/callback SelectString true 0')
+        Ferret:wait(1)
+        yield('/callback SelectIconString true ' .. Ferret.job - 8) -- 5 is list index
+        Ferret:wait(1)
+        yield('/callback SelectYesno true 0')
+        Ferret:repeat_until(function()
+            yield('/click Talk Click')
+        end, function()
+            return not IsAddonVisible('Talk')
+        end)
+        Ferret:wait(5)
+
+        return
+    end
+
     local mission = WKSMission:get_best_available_mission()
     mission:start()
     Ferret:wait(self.wait_timers.post_mission_start)
