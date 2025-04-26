@@ -59,6 +59,8 @@ function StellarMissions:loop()
 
     self.cosmic_exploration.main_hud:wait_until_ready()
 
+    self.cosmic_exploration.cosmic_fortunes:play()
+
     self.cosmic_exploration.mission_hud:open_basic_missions()
 
     local available_missions =

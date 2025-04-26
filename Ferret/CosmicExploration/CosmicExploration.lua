@@ -5,6 +5,7 @@ require("Ferret/CosmicExploration/WKSHud")
 require("Ferret/CosmicExploration/WKSMission")
 require("Ferret/CosmicExploration/WKSMissionInfomation")
 require("Ferret/CosmicExploration/WKSRecipeNotebook")
+require("Ferret/CosmicExploration/WKSLottery")
 
 CosmicExploration = {}
 
@@ -22,6 +23,7 @@ function CosmicExploration:new(ferret)
     self.mission_hud = WKSMission:new(ferret)
     self.mission_information_hud = WKSMissionInfomation:new(ferret)
     self.recipe_notebook_hud = WKSRecipeNotebook:new(ferret)
+    self.cosmic_fortunes = WKSLottery:new(ferret)
 
     return o
 end
