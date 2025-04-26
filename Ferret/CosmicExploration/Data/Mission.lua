@@ -5,6 +5,11 @@
 --------------------------------------------------------------------------------
 
 Mission = Object:extend()
+Mission.wait_timers = {
+    pre_synthesize = 0,
+    post_synthesize = 0,
+}
+
 function Mission:new(id, name, job, class)
     self.id = id
     self.name = name
@@ -114,13 +119,13 @@ end
 function Mission:handle()
     Logger:debug('Starting mission: ' .. self.name:get())
 
-    WKSHud:open_mission_menu()
-
     if not self.has_multiple_recipes then
         Logger:debug('Only 1 recipe')
         Ferret:repeat_until(function()
             if WKSRecipeNotebook:is_ready() then
+                Ferret:wait(Mission.wait_timers.pre_synthesize)
                 WKSRecipeNotebook:synthesize()
+                Ferret:wait(Mission.wait_timers.post_synthesize)
             end
         end, function()
             return self:is_complete()
@@ -143,9 +148,9 @@ function Mission:handle()
                             -- Ferret:wait(1)
                             Logger:debug('Crafting: (' .. i .. '/' .. count .. ')')
                             WKSRecipeNotebook:set_hq()
-                            Ferret:wait(0.5)
+                            Ferret:wait(Mission.wait_timers.pre_synthesize)
                             WKSRecipeNotebook:synthesize()
-                            Ferret:wait(0.5)
+                            Ferret:wait(Mission.wait_timers.post_synthesize)
                         end
                     end
                 end

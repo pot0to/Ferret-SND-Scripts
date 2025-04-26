@@ -22,9 +22,24 @@ Logger.show_debug = true
 stellar_missions.language = 'en' -- optional 'en', 'de', 'fr', 'jp' default: 'en'
 
 stellar_missions.job = Jobs.Carpenter
-stellar_missions.mission_list = {
-    "Gathering Miscellany",
-}
+-- Define mission list by names
+stellar_missions.mission_list = stellar_missions:create_job_list_by_names({
+    "A-1: High-grade Paper",
+    "A-1: Specialized Materials I",
+    "Heat-resistant Resin",
+    "A-1: Starship Insulation",
+})
+-- or by ids
+stellar_missions.mission_list = stellar_missions:create_job_list_by_names({
+    23,
+    35,
+    17,
+    24,
+})
+-- or a custom callback
+stellar_missions.mission_list = stellar_missions:create_job_list(function(mission)
+    return mission.class == "D" or mission.class == "C"
+end)
 
 stellar_missions:start()
 ```

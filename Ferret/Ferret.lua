@@ -17,7 +17,7 @@ function Ferret:new(name)
 end
 
 function Ferret:init()
-    self.version = Version(0, 4, 0)
+    self.version = Version(0, 4, 1)
 end
 
 function Ferret:add_plugin(plugin)
@@ -149,4 +149,12 @@ function Ferret:table_random(subject)
 
     local key = keys[math.random(1, #keys)]
     return subject[key]
+end
+
+function Ferret:table_first(subject)
+    for _, value in pairs(subject) do
+        return value
+    end
+
+    return nil
 end

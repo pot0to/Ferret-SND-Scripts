@@ -16,10 +16,12 @@
 CraftingConsumables = Plugin:extend()
 function CraftingConsumables:new()
     CraftingConsumables.super.new(self, 'Crafting Consumables', 'crafting_consumables')
-    self.food = nil
+    self.food = ''
     self.food_threshold = 5
-    self.medicine = nil
+    self.medicine = ''
     self.medicine_threshold = 5
+
+    self.wait_time = 5
 
     self.should_eat = function()
         return true
@@ -33,18 +35,18 @@ end
 function CraftingConsumables:init()
     Ferret:subscribe(Hooks.PRE_CRAFT, function(context)
         -- Food
-        if self:should_eat() and self.food ~= nil then
+        if self:should_eat() and (self.food ~= nil and self.food ~= '') then
             local remaining = self:get_remaining_food_time()
             if remaining <= self.food_threshold then
                 yield('/item ' .. self.food)
                 Ferret:wait_until(function()
                     return self:get_remaining_food_time() > remaining
                 end)
-                Ferret:wait(5)
+                Ferret:wait(self.wait_time)
             end
         end
 
-        if self:should_drink() and self.medicine ~= nil then
+        if self:should_drink() and (self.medicine ~= nil and self.medicine ~= '') then
             local remaining = self:get_remaining_medicine_time()
             if remaining <= self.medicine_threshold then
                 yield('/item ' .. self.medicine)

@@ -9,31 +9,49 @@ function MissionList:new()
     self.missions = {}
 end
 
-function MissionList:filter_by_job(job)
+function MissionList:filter(callback)
     local filtered = MissionList()
     for _, mission in ipairs(self.missions) do
-        if mission.job == job then
+        if callback(mission) then
             table.insert(filtered.missions, mission)
         end
     end
 
     return filtered
+end
+
+function MissionList:filter_by_job(job)
+    return self:filter(function(mission)
+        return mission.job == job
+    end)
 end
 
 function MissionList:filter_by_class(class)
-    local filtered = MissionList()
-    for _, mission in pairs(self.missions) do
-        if mission.class == class then
-            table.insert(filtered.missions, mission)
-        end
+    return self:filter(function(mission)
+        return mission.class == class
+    end)
+end
+
+function MissionList:filter_by_names(names)
+    for i, v in ipairs(names) do
+        names[i] = string.upper(v)
     end
 
-    return filtered
+    return self:filter(function(mission)
+        return Ferret:table_contains(names, string.upper(mission.name:get()))
+    end)
+end
+
+function MissionList:filter_by_ids(ids)
+    return self:filter(function(mission)
+        return Ferret:table_contains(ids, mission.id)
+    end)
 end
 
 function MissionList:find_by_name(name)
+    name = string.upper(name)
     for _, mission in pairs(self.missions) do
-        local start_index = string.find(mission.name:get(), name, 0, true)
+        local start_index = string.find(string.upper(mission.name:get()), name, 0, true)
 
         if start_index ~= nil and start_index <= 4 then
             return mission

@@ -26,8 +26,11 @@ function ExtractMateria:init()
 
         while CanExtractMateria(100) do
             if MaterializeDialog:is_visible() then
-                Materialize:click_first_slot()
-                MaterializeDialog:wait_until_visible()
+                Ferret:repeat_until(function()
+                    Materialize:click_first_slot()
+                end, function()
+                    return MaterializeDialog:is_visible()
+                end)
             end
 
             Ferret:repeat_until(function()
