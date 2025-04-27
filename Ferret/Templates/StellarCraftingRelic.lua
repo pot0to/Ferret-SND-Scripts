@@ -115,15 +115,12 @@ function StellarCraftingRelic:loop()
 
     local mission = WKSMission:get_best_available_mission(self.blacklist)
     if mission == nil then
-        Logger:error(':(*)')
+        Logger:error('Failed to get mission')
         self:stop()
         return
     end
 
     Logger:info('Mission: ' .. mission:to_string())
-    if true then
-        return
-    end
 
     mission:start()
 
