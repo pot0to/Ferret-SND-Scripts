@@ -53,7 +53,7 @@ local ferret = require("Ferret/Templates/StellarCraftingRelic")
 
 ferret.job = Jobs.Weaver
 ferret.blacklist = MasterMissionList:filter_by_job(ferret.job):filter(function(mission)
-    return mission.class == 'C' and mission.job == Ferret.job
+    return mission.class == 'A'
 end)
 
 ferret:start()
