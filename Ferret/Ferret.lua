@@ -119,6 +119,9 @@ function Ferret:callback(addon, update_visiblity, ...)
     for k, v in ipairs({ ... }) do
         command = command .. ' ' .. v
     end
+
+    Logger:debug('Callback: ' .. command)
+    yield(command)
 end
 
 -- Helpers
