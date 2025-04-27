@@ -55,22 +55,6 @@ function Ferret:wait_until(condition, delay, max)
     until condition() or (max ~= nil and max > 0 and elapsed >= max)
 end
 
-function Ferret:wait_for_addon(addon)
-    Logger:debug('Waiting for addon: ' .. addon)
-    self:wait_until(function()
-        return IsAddonVisible(addon)
-    end)
-    Logger:debug('Addon ' .. addon .. ' is now visible')
-end
-
-function Ferret:wait_for_ready_addon(addon)
-    Logger:debug('Waiting for ready addon: ' .. addon)
-    self:wait_until(function()
-        return IsAddonReady(addon)
-    end)
-    Logger:debug('Addon ' .. addon .. ' is now visible and ready')
-end
-
 function Ferret:stop()
     self.run = false
 end
@@ -118,6 +102,22 @@ function Ferret:emit(hook, context)
 
     for _, callback in pairs(self.hook_subscriptions[hook]) do
         callback(self, context)
+    end
+end
+
+function Ferret:action(name)
+    yield('/ac "' .. name .. '"')
+end
+
+function Ferret:callback(addon, update_visiblity, ...)
+    local command = '/callback ' .. addon.key
+    if update_visiblity then
+        command = command .. ' true'
+    else
+        command = command .. ' false'
+    end
+    for k, v in ipairs({ ... }) do
+        command = command .. ' ' .. v
     end
 end
 

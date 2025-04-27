@@ -11,15 +11,15 @@ function Materialize:new()
 end
 
 function Materialize:open()
-    yield('/ac "Materia Extraction"')
+    MateriaExtraction:execute()
 end
 
 function Materialize:close()
-    yield('/callback Materialize true -1')
+    Ferret:callback(self, true, -1)
 end
 
 function Materialize:click_first_slot()
-    yield('/callback Materialize true 2')
+    Ferret:callback(self, true, 2)
 end
 
 return Materialize()
