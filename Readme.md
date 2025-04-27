@@ -2,6 +2,9 @@
 
 To be used with https://github.com/Jaksuhn/SomethingNeedDoing
 
+**Currently you will need to be on the testing version of SND (12.0)**
+https://goatcorp.github.io/faq/dalamud_troubleshooting.html#q-how-do-i-enable-plugin-test-builds
+
 ## Installation
 
 - Download or clone the Github repository linked above.
