@@ -12,7 +12,7 @@ function StellarCraftingRelic:new()
     StellarCraftingRelic.super.new(self, 'Stellar Crafting Relic')
 
     self.job = nil
-    self.template_version = Version(0, 1, 0)
+    self.template_version = Version(0, 1, 1)
 
     self.cosmic_exploration = CosmicExploration()
 
