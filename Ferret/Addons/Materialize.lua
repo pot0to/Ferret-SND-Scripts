@@ -11,7 +11,7 @@ function Materialize:new()
 end
 
 function Materialize:open()
-    MateriaExtraction:execute()
+    Actions.MateriaExtraction:execute()
 end
 
 function Materialize:close()

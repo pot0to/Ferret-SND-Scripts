@@ -6,7 +6,7 @@
 
 local Repair = Action:extend()
 function Repair:new()
-    Repair.super.new(self, Translatable('Repair'):with_de('Reparatur'):with_fr('Rapatriement'):with_jp('修理'))
+    Repair.super.new(self, Translatable('Repair'):with_de('Reparatur'):with_fr('Réparation'):with_jp('修理'))
 end
 
 return Repair()

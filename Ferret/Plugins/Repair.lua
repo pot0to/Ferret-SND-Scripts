@@ -22,7 +22,7 @@ function Repair:init()
 
         Logger:debug('Repairing')
         while not IsAddonVisible('Repair') do
-            Repair:execute()
+            Actions.Repair:execute()
             Ferret:wait(0.5)
         end
 
