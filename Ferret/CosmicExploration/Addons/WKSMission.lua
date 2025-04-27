@@ -7,18 +7,18 @@ function WKSMission:start_mission(id)
     self:wait_until_ready()
 
     repeat
-        if IsAddonReady('WKSMission') then
-            yield('/callback WKSMission true 13 ' .. id)
+        if self:is_ready() then
+            Ferret:callback(self, true, 13, id)
         end
         Ferret:wait(0.1)
-    until IsAddonVisible('SelectYesno')
+    until SelectYesno:is_visible()
 
     repeat
-        if IsAddonReady('SelectYesno') then
-            yield('/callback SelectYesno true 0')
+        if SelectYesno:is_ready() then
+            SelectYesno:yes()
         end
         Ferret:wait(0.1)
-    until not IsAddonReady('WKSMission')
+    until not self:is_ready()
 end
 
 function WKSMission:open()
@@ -31,19 +31,19 @@ end
 function WKSMission:open_basic_missions()
     self:open()
     Logger:debug('Opening basic mission ui')
-    yield('/callback WKSMission true 15 0')
+    Ferret:callback(self, true, 15, 0)
 end
 
 function WKSMission:open_critical_missions()
     self:open()
     Logger:debug('Opening critical mission ui')
-    yield('/callback WKSMission true 15 1')
+    Ferret:callback(self, true, 15, 1)
 end
 
 function WKSMission:open_provisional_missions()
     self:open()
     Logger:debug('Opening provisional mission ui')
-    yield('/callback WKSMission true 15 2')
+    Ferret:callback(self, true, 15, 2)
 end
 
 function WKSMission:get_mission_name_by_index(index)

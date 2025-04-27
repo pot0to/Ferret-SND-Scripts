@@ -25,6 +25,8 @@ function StellarCraftingRelic:new()
 
     self.blacklist = MissionList()
 
+    self.researchingway = NPC(Translatable('リサーチングウェイ'):with_jp())
+
     self:init()
 end
 
@@ -88,27 +90,18 @@ function StellarCraftingRelic:loop()
     end
 
     if is_ready_to_upgrade then
-        Ferret:wait(5)
-        yield('/target Researchingway')
-        yield('/interact')
+        Ferret:wait(2)
+        self.researchingway:interact()
         Ferret:wait(1)
-        Ferret:repeat_until(function()
-            yield('/click Talk Click')
-        end, function()
-            return not IsAddonVisible('Talk')
-        end)
+        Talk:progress_until_done()
         Ferret:wait(1)
-        yield('/callback SelectString true 0')
+        SelectString:select_index(0)
         Ferret:wait(1)
-        yield('/callback SelectIconString true ' .. Ferret.job - 8) -- 5 is list index
+        SelectIconString:select_index(Ferret.job - 8)
         Ferret:wait(1)
-        yield('/callback SelectYesno true 0')
-        Ferret:repeat_until(function()
-            yield('/click Talk Click')
-        end, function()
-            return not IsAddonVisible('Talk')
-        end)
-        Ferret:wait(5)
+        SelectYesno:yes()
+        Talk:progress_until_done()
+        Ferret:wait(2)
 
         return
     end

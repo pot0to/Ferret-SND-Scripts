@@ -8,7 +8,7 @@ function WKSHud:open_mission_menu()
         return
     end
 
-    yield('/callback WKSHud true 11')
+    Ferret:callback(self, true, 11)
 end
 
 function WKSHud:open_cosmic_research()
@@ -16,7 +16,7 @@ function WKSHud:open_cosmic_research()
         return
     end
 
-    yield('/callback WKSHud true 15')
+    Ferret:callback(self, true, 15)
 end
 
 function WKSHud:close_cosmic_research()
@@ -24,7 +24,7 @@ function WKSHud:close_cosmic_research()
         return
     end
 
-    yield('/callback WKSHud true 15')
+    Ferret:callback(self, true, 15)
 end
 
 return WKSHud()
