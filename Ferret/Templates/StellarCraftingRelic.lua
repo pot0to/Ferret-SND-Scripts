@@ -23,6 +23,8 @@ function StellarCraftingRelic:new()
         post_mission_abandon = 0,
     }
 
+    self.blacklist = MissionList()
+
     self:init()
 end
 
@@ -64,6 +66,7 @@ function StellarCraftingRelic:loop()
     Ferret:wait(self.wait_timers.post_open_mission_list)
 
     WKSHud:close_cosmic_research()
+    Ferret:wait(1)
     WKSHud:open_cosmic_research()
     WKSToolCustomize:wait_until_ready()
     Ferret:wait(1)
@@ -110,8 +113,20 @@ function StellarCraftingRelic:loop()
         return
     end
 
-    local mission = WKSMission:get_best_available_mission()
+    local mission = WKSMission:get_best_available_mission(self.blacklist)
+    if mission == nil then
+        Logger:error(':(*)')
+        self:stop()
+        return
+    end
+
+    Logger:info('Mission: ' .. mission:to_string())
+    if true then
+        return
+    end
+
     mission:start()
+
     Ferret:wait(self.wait_timers.post_mission_start)
     WKSRecipeNotebook:wait_until_ready()
     self:emit(Hooks.PRE_CRAFT)

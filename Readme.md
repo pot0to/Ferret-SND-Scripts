@@ -51,14 +51,10 @@ ferret:start()
 ```
 local ferret = require("Ferret/Templates/StellarCraftingRelic")
 
--- require("Ferret/Plugins/CraftingConsumables") -- Optional consumables plugin
--- ferret.plugins.crafting_consumables.food = "Rroneek Steak <HQ>" -- Add if you want to eat food
--- ferret.plugins.crafting_consumables.medicine = "Commanding Craftsman's Draught <HQ>" -- Add if you want to use medicine
-
-Logger.show_debug = true
-Ferret.language = 'en' -- optional 'en', 'de', 'fr', 'jp' default: 'en'
-
 ferret.job = Jobs.Weaver
+ferret.blacklist = MasterMissionList:filter_by_job(ferret.job):filter(function(mission)
+    return mission.class == 'C' and mission.job == Ferret.job
+end)
 
 ferret:start()
 ```

@@ -74,7 +74,7 @@ function WKSMission:get_available_missions()
     return missions
 end
 
-function WKSMission:get_best_available_mission()
+function WKSMission:get_best_available_mission(blacklist)
     -- Function to select the best mission based on urgency-weighted progress
     local function select_best_mission(progress, rewards)
         local urgencies = {}
@@ -93,7 +93,7 @@ function WKSMission:get_best_available_mission()
         local best_score = -math.huge
         local best_index = -1
 
-        for i, mission in ipairs(rewards) do
+        for i, mission in pairs(rewards) do
             local score = 0
             for bar_index, progress in pairs(mission) do
                 if urgencies[bar_index] then
@@ -125,15 +125,20 @@ function WKSMission:get_best_available_mission()
     }
 
     local rewards = {}
-
     local missions = WKSMission:get_available_missions()
     for index, mission in pairs(missions.missions) do
-        local r = {}
-        for _, reward in pairs(mission.exp_reward) do
-            r[reward.tier] = reward.amount
-        end
+        Logger:info('Checking mission: ' .. mission.name:get())
+        if not blacklist:has_id(mission.id) then
+            Logger:info('Mission \'' .. mission.name:get() .. '\' is not blacklsited.')
+            local r = {}
+            for _, reward in pairs(mission.exp_reward) do
+                r[reward.tier] = reward.amount
+            end
 
-        rewards[index] = r
+            rewards[index] = r
+        else
+            Logger:info('Mission \'' .. mission.name:get() .. '\' is blacklsited.')
+        end
     end
 
     return missions.missions[select_best_mission(progress, rewards)]
