@@ -12,7 +12,7 @@ function StellarCraftingRelic:new()
     StellarCraftingRelic.super.new(self, 'Stellar Crafting Relic')
 
     self.job = nil
-    self.template_version = Version(0, 2, 0)
+    self.template_version = Version(0, 2, 1)
 
     self.cosmic_exploration = CosmicExploration()
 
@@ -25,7 +25,7 @@ function StellarCraftingRelic:new()
 
     self.blacklist = MissionList()
 
-    self.researchingway = NPC(Translatable('リサーチングウェイ'):with_jp())
+    self.researchingway = NPC(Translatable('Researchingway'):with_jp('リサーチングウェイ'))
 
     self:init()
 end
