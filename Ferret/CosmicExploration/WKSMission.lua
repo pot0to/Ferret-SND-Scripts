@@ -80,7 +80,7 @@ function WKSMission:get_available_missions()
             end
             index = index + 1
         end
-    until (mission == "") or index >= 24
+    until (mission == "") or index >= 15
 
     return missions
 end
