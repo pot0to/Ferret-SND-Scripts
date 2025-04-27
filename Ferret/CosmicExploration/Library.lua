@@ -1,4 +1,5 @@
 require('Ferret/CosmicExploration/CosmicExploration')
+require('FErret/CosmicExploration/ResearchProgressBar')
 
 require('Ferret/CosmicExploration/Addons/Addons')
 

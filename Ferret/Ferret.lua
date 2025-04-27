@@ -17,7 +17,7 @@ function Ferret:new(name)
 end
 
 function Ferret:init()
-    self.version = Version(0, 4, 1)
+    self.version = Version(0, 4, 3)
 end
 
 function Ferret:add_plugin(plugin)
@@ -157,4 +157,23 @@ function Ferret:table_first(subject)
     end
 
     return nil
+end
+
+function Ferret:table_dump(subject)
+    if type(subject) == 'table' then
+        local s = '{ '
+        for k, v in pairs(subject) do
+            if type(k) ~= 'number' then
+                k = '"' .. k .. '"'
+            end
+            s = s .. '[' .. k .. '] = ' .. self:table_dump(v) .. ','
+        end
+        return s .. '} '
+    end
+
+    return tostring(subject)
+end
+
+function Ferret:parse_number(str)
+    return tonumber((str:gsub(',', ''):gsub('%.', ''):gsub(' ', '')))
 end
