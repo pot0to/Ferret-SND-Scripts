@@ -2,6 +2,26 @@
 
 To be used with https://github.com/Jaksuhn/SomethingNeedDoing
 
+## Installation
+
+- Download or clone the Github repository linked above.
+  - If you've downloaded the zip, extract it somewhere on your computer.
+- Get the path to the folder that contains your copy of Ferret, example:
+  - My path to `Ferret.lua` is `C:/ferret/Ferret/Ferret.lua` So the path I will need is `C:/ferret`.
+  - Please not if you use backslashes in your path, you will need to double them up. `C:\\ferret`
+- Add this path to SND.
+  - Open the main SND window (The window where you manage all your scripts and macros)
+  - Click the `?` (Help) icon, this will bring up another window
+  - Click the `Options` tab
+  - Expand the `Lua` section
+  - Add your ferret path to the required path list
+- You can now use Ferret
+
+## Reporting an issue
+
+Please provide as much information as you can with your report, with the debug output from Ferret.
+The best way to get your issue noticed and not lost among messages is by submitting an issue on Github: https://github.com/OhKannaDuh/Ferret/issues/new
+
 ### Stellar Missions example:
 
 ```
@@ -23,21 +43,21 @@ Ferret.language = 'en' -- optional 'en', 'de', 'fr', 'jp' default: 'en'
 
 ferret.job = Jobs.Carpenter
 -- Define mission list by names
-ferret.mission_list = stellar_missions:create_job_list_by_names({
+ferret.mission_list = ferret:create_job_list_by_names({
     "A-1: High-grade Paper",
     "A-1: Specialized Materials I",
     "Heat-resistant Resin",
     "A-1: Starship Insulation",
 })
 -- or by ids
-ferret.mission_list = stellar_missions:create_job_list_by_names({
+ferret.mission_list = ferret:create_job_list_by_names({
     23,
     35,
     17,
     24,
 })
 -- or a custom callback
-ferret.mission_list = stellar_missions:create_job_list(function(mission)
+ferret.mission_list = ferret:create_job_list(function(mission)
     return mission.class == "D" or mission.class == "C"
 end)
 
