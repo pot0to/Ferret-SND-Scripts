@@ -22,15 +22,15 @@ function Repair:init()
 
         Logger:debug('Repairing')
         while not IsAddonVisible('Repair') do
-            yield('/ac repair')
+            Actions.Repair:execute()
             Ferret:wait(0.5)
         end
 
         yield('/callback Repair true 0')
         Ferret:wait(0.1)
 
-        if IsAddonVisible('SelectYesno') then
-            yield('/callback SelectYesno true 0')
+        if SelectYesno:is_visible() then
+            SelectYesno:yes()
             Ferret:wait(0.1)
         end
 

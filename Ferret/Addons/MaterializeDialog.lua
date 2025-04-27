@@ -11,11 +11,11 @@ function MaterializeDialog:new()
 end
 
 function MaterializeDialog:yes()
-    yield('/callback MaterializeDialog true 0')
+    Ferret:callback(self, true, 0)
 end
 
 function MaterializeDialog:no()
-    yield('/callback MaterializeDialog true 1')
+    Ferret:callback(self, true, 1)
 end
 
 return MaterializeDialog()

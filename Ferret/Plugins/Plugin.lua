@@ -6,6 +6,5 @@ function Plugin:new(name, key)
 end
 
 function Plugin:init(ferret)
-    Logger:debug(':()')
+    Logger:debug('No init set for this plugin')
 end
-
