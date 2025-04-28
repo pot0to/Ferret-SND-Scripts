@@ -3,6 +3,7 @@ Object = require('external/classic')
 -- Data enums and objects
 require('Ferret/Data/Translatable')
 require('Ferret/Data/Conditions')
+require('Ferret/Data/Weather')
 require('Ferret/Data/Hooks')
 require('Ferret/Data/Jobs')
 require('Ferret/Data/Name')

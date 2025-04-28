@@ -71,6 +71,22 @@ function WKSMission:get_available_missions()
         end
     until (mission == '') or index >= 24
 
+    local weather = GetActiveWeatherID()
+    if weather == Weather.UmbralWind or weather == Weather.MoonDust then
+        index = 2
+        yield("/callback WKSMission true 15 1")
+        repeat
+            local mission = self:get_mission_name_by_index(index):gsub(' ', '')
+        until (mission == '') or index >= 6
+
+        -- MasterMissionList:filter_by_job(Ferret.job):filter_by_weather(weather):find_by_name(mission)
+        -- if found_mission ~= nil then
+        --     -- Logger:debug(mission .. ": " .. found_mission:to_string())
+        --     -- missions.missions[found_mission.id] = found_mission
+        --     table.insert(missions.missions, found_mission)
+        -- end
+    end
+
     return missions
 end
 
